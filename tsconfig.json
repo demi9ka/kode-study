@@ -1,0 +1,17 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@shared/*": ["shared/*"],
+      "@features/*": ["features/*"],
+      "@entities/*": ["entities/*"],
+      "@widgets/*": ["widgets/*"],
+      "@screens/*": ["screens/*"],
+      "@routing/*": ["routing/*"],
+      "@app/*": ["app/*"]
+    },
+    "types": ["styled-components-react-native"]
+  }
+}
