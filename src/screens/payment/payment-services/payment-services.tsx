@@ -17,6 +17,7 @@ import {
 import { services } from './constants'
 import { TServiceItem } from './types'
 import { useState } from 'react'
+import { IconSearch } from '@shared/ui/icons'
 
 export type PaymentServicesProps = StackScreenProps<
   RootStackParamsList,
@@ -25,10 +26,9 @@ export type PaymentServicesProps = StackScreenProps<
 
 export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
   const isLoading = false
-
   const [search, setSearch] = useState('')
 
-  const onPress = (serviceId: string, title: string) => {
+  const openCreate = (serviceId: string, title: string) => {
     navigation.navigate('paymentCreate', { serviceId, title })
   }
 
@@ -38,9 +38,11 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
     return (
       <TouchableOpacity
         style={styles.serviceWrapper}
-        onPress={() => onPress(serviceId, serviceName)}>
-        <Image source={serviceIcon} />
-        <Text>{serviceName}</Text>
+        onPress={() => openCreate(serviceId, serviceName)}>
+        <Image style={{ width: 40, height: 40 }} source={serviceIcon} />
+        <Text style={{ color: darkTheme.palette.text.primary, fontSize: 15 }}>
+          {serviceName}
+        </Text>
       </TouchableOpacity>
     )
   }
@@ -51,7 +53,7 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
 
   return (
     <KeyboardView>
-      <View style={styles.services}>
+      <View style={styles.wrapper}>
         <FlatList
           refreshControl={
             <RefreshControl
@@ -60,22 +62,29 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
               tintColor='white'
             />
           }
-          data={services}
+          data={services.filter(({ serviceName }) =>
+            serviceName.toUpperCase().includes(search.toUpperCase()),
+          )}
           renderItem={renderItem}
           ItemSeparatorComponent={ItemSeparatorComponent}
           keyExtractor={keyExtractor}
-          initialNumToRender={10} // TODO: почитайте в доке про параметры оптимизации
-          keyboardShouldPersistTaps='handled' // TODO: Посмотрите сами что это
+          initialNumToRender={25}
+          keyboardShouldPersistTaps='handled'
           ListHeaderComponent={
-            <TextInput
-              placeholder='Поиск'
-              placeholderTextColor={darkTheme.palette.text.tertiary}
-              style={styles.input}
-              value={search}
-              onChangeText={setSearch}
-              keyboardType='email-address'
-              keyboardAppearance='dark'
-            />
+            <View style={styles.inputWrapper}>
+              <IconSearch
+                size={24}
+                color={darkTheme.palette.content.tertiary}
+              />
+              <TextInput
+                placeholder='Поиск'
+                placeholderTextColor={darkTheme.palette.text.tertiary}
+                style={styles.input}
+                value={search}
+                onChangeText={setSearch}
+                keyboardAppearance='dark'
+              />
+            </View>
           }
           ListHeaderComponentStyle={styles.header}
         />
@@ -86,26 +95,52 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
 
 const keyExtractor = (item: TServiceItem) => item.serviceId
 
-const ItemSeparatorComponent = () => <View style={styles.divider} />
+const ItemSeparatorComponent = () => (
+  <View
+    style={{
+      width: '100%',
+      paddingLeft: '5%',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    }}>
+    <View style={styles.divider} />
+  </View>
+)
 
 const styles = StyleSheet.create({
-  header: { padding: 12 },
-  input: {
+  header: {
     padding: 16,
-    backgroundColor: darkTheme.palette.content.secondary,
-    color: 'white',
-    borderRadius: 16,
+    paddingTop: 0,
+    backgroundColor: darkTheme.palette.background.primary,
   },
-  services: { flex: 1, backgroundColor: darkTheme.palette.background.primary },
+  input: {
+    color: 'white',
+    fontSize: 15,
+    flexGrow: 2,
+  },
+
+  inputWrapper: {
+    flexDirection: 'row',
+    padding: 6,
+    paddingLeft: 8,
+    alignItems: 'center',
+    paddingRight: 8,
+    backgroundColor: darkTheme.palette.content.secondary,
+    borderRadius: 8,
+    gap: 4,
+  },
+  wrapper: { flex: 1, backgroundColor: darkTheme.palette.background.secondary },
   serviceWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
-    backgroundColor: 'grey',
     padding: 16,
+    paddingTop: 14,
+    paddingBottom: 14,
   },
   divider: {
-    width: '100%',
+    width: '95%',
+    backgroundColor: darkTheme.palette.content.secondary,
     height: 1,
   },
 })
