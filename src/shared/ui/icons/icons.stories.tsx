@@ -9,6 +9,7 @@ import { styled, useTheme } from '../theme'
 const ListWrapper = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
+  background-color: ${({ theme }) => theme.palette.background.primary};
 `
 const IconWrapper = styled.View`
   width: 25%;
