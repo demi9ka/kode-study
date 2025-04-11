@@ -8,4 +8,5 @@ export const Images = {
   tele2: require('./tele2.png'),
   tinkoff: require('./tinkoff.png'),
   yota: require('./yota.png'),
-};
+  bankcard: require('./bankcard.png'),
+}
