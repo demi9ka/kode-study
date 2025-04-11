@@ -10,7 +10,7 @@
       "@widgets/*": ["widgets/*"],
       "@screens/*": ["screens/*"],
       "@routing/*": ["routing/*"],
-      "@app/*": ["app/*"],
+      "@app/*": ["app/*"]
     },
     "types": ["styled-components-react-native"]
   }

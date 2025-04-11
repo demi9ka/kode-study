@@ -9,4 +9,5 @@ export const Images = {
   tinkoff: require('./tinkoff.png'),
   yota: require('./yota.png'),
   bankcard: require('./bankcard.png'),
+  successTransaction: require('./success.png'),
 }

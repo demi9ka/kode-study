@@ -4,6 +4,7 @@ import { PaymentCreate, PaymentServices } from '@screens/payment'
 import { rootStackOptions } from './config'
 import { HomeTabsNavigation } from '@routing/home-tabs-navigation'
 import { PaymentConfirm } from '@screens/payment/payment-confirm'
+import { PaymentSuccess } from '@screens/payment/payment-success'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
@@ -33,6 +34,11 @@ export const AppNavigation = () => {
         name='paymentConfirm'
         component={PaymentConfirm}
         options={{ headerTitle: 'Подтверждение' }}
+      />
+      <RootStack.Screen
+        name='paymentSuccess'
+        component={PaymentSuccess}
+        options={{ headerShown: false }}
       />
     </RootStack.Navigator>
   )

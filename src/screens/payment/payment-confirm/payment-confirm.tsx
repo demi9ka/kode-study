@@ -11,7 +11,9 @@ export type PaymentSuccessProps = StackScreenProps<
 >
 
 export const PaymentConfirm = ({ navigation, route }: PaymentSuccessProps) => {
-  const confirmTransaction = () => {}
+  const confirmTransaction = () => {
+    navigation.navigate('paymentSuccess', { amount: route.params.amount })
+  }
   const openLink = () => {
     Linking.openURL('https://career.kode.ru/training/') // Замените на ваш URL
       .catch(err => console.error('Failed to open URL:', err))
