@@ -7,10 +7,10 @@ import { services } from '../payment-services/constants'
 
 export type PaymentSuccessProps = StackScreenProps<
   RootStackParamsList,
-  'paymentSuccess'
+  'paymentConfirm'
 >
 
-export const PaymentSuccess = ({ navigation, route }: PaymentSuccessProps) => {
+export const PaymentConfirm = ({ navigation, route }: PaymentSuccessProps) => {
   const confirmTransaction = () => {}
   const openLink = () => {
     Linking.openURL('https://career.kode.ru/training/') // Замените на ваш URL
@@ -65,18 +65,10 @@ export const PaymentSuccess = ({ navigation, route }: PaymentSuccessProps) => {
   )
 }
 
-const ItemSeparatorComponent = () => <View style={styles.divider} />
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: darkTheme.palette.background.secondary,
-  },
-  divider: {
-    width: '90%',
-    backgroundColor: darkTheme.palette.content.primary,
-    marginLeft: '5%',
-    height: 1,
   },
   elem: {
     padding: 8,

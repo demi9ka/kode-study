@@ -4,10 +4,13 @@ export type RootStackParamsList = {
   HomeTabs: HomeTabsParamsList
   paymentServices: undefined
   paymentCreate: { serviceId: string; title: string }
-  paymentSuccess: {
+  paymentConfirm: {
     serviceId: string
     title: string
     phone: string
+    amount: number
+  }
+  paymentSuccess: {
     amount: number
   }
 }

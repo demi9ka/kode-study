@@ -36,7 +36,7 @@ export const PaymentCreate = ({ navigation, route }: TPaymentCreateProps) => {
   }, [value, phone])
   const continueTransaction = () => {
     if (disable) return
-    navigation.navigate('paymentSuccess', {
+    navigation.navigate('paymentConfirm', {
       amount: value,
       phone,
       serviceId: route.params.serviceId,
