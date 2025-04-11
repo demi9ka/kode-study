@@ -3,6 +3,7 @@ import { RootStackParamsList } from './types'
 import { PaymentCreate, PaymentServices } from '@screens/payment'
 import { rootStackOptions } from './config'
 import { HomeTabsNavigation } from '@routing/home-tabs-navigation'
+import { PaymentSuccess } from '@screens/payment/payment-success'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
@@ -27,6 +28,11 @@ export const AppNavigation = () => {
         name='paymentCreate'
         component={PaymentCreate}
         options={({ route }) => ({ headerTitle: route.params.title })}
+      />
+      <RootStack.Screen
+        name='paymentSuccess'
+        component={PaymentSuccess}
+        options={{ headerTitle: 'Подтверждение' }}
       />
     </RootStack.Navigator>
   )
