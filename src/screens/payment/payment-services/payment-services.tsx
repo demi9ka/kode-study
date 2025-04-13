@@ -3,26 +3,36 @@ import { RootStackParamsList } from '@routing/app-navigation/types'
 import { KeyboardView } from '@shared/ui/templates'
 import { darkTheme } from '@shared/ui/theme'
 import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
   View,
   Image,
   FlatList,
   ListRenderItem,
   RefreshControl,
   ActivityIndicator,
-  TextInput,
 } from 'react-native'
 import { services } from './constants'
 import { TServiceItem } from './types'
 import { useState } from 'react'
 import { IconSearch } from '@shared/ui/icons'
+import { ListItem } from '@shared/ui/molecules/list-item'
+import styled from 'styled-components'
+import { Input } from '@shared/ui/molecules'
+import { Line } from '@shared/ui/atoms'
 
 export type PaymentServicesProps = StackScreenProps<
   RootStackParamsList,
   'paymentServices'
 >
+
+const Wrapper = styled(View)`
+  flex: 1;
+  background-color: ${({ theme }) => theme.palette.background.secondary};
+`
+const Header = styled(View)`
+  padding: ${({ theme }) => theme.spacing(2)}px;
+  padding-top: 0;
+  background-color: ${({ theme }) => theme.palette.background.primary};
+`
 
 export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
   const isLoading = false
@@ -36,14 +46,14 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
     item: { serviceId, serviceIcon, serviceName },
   }) => {
     return (
-      <TouchableOpacity
-        style={styles.serviceWrapper}
-        onPress={() => openCreate(serviceId, serviceName)}>
-        <Image style={{ width: 40, height: 40 }} source={serviceIcon} />
-        <Text style={{ color: darkTheme.palette.text.primary, fontSize: 15 }}>
-          {serviceName}
-        </Text>
-      </TouchableOpacity>
+      <ListItem
+        content={serviceName}
+        leftSection={
+          <Image style={{ width: 40, height: 40 }} source={serviceIcon} />
+        }
+        onPress={() => openCreate(serviceId, serviceName)}
+        useLine={true}
+      />
     )
   }
 
@@ -53,7 +63,7 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
 
   return (
     <KeyboardView>
-      <View style={styles.wrapper}>
+      <Wrapper>
         <FlatList
           refreshControl={
             <RefreshControl
@@ -66,81 +76,31 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
             serviceName.toUpperCase().includes(search.toUpperCase()),
           )}
           renderItem={renderItem}
-          ItemSeparatorComponent={ItemSeparatorComponent}
+          ItemSeparatorComponent={separatorLine}
           keyExtractor={keyExtractor}
           initialNumToRender={25}
           keyboardShouldPersistTaps='handled'
           ListHeaderComponent={
-            <View style={styles.inputWrapper}>
-              <IconSearch
-                size={24}
-                color={darkTheme.palette.content.tertiary}
-              />
-              <TextInput
-                placeholder='Поиск'
-                placeholderTextColor={darkTheme.palette.text.tertiary}
-                style={styles.input}
+            <Header>
+              <Input
                 value={search}
                 onChangeText={setSearch}
-                keyboardAppearance='dark'
+                leftSection={
+                  <IconSearch
+                    size={24}
+                    color={darkTheme.palette.content.tertiary}
+                  />
+                }
+                placeholder='Поиск'
               />
-            </View>
+            </Header>
           }
-          ListHeaderComponentStyle={styles.header}
         />
-      </View>
+      </Wrapper>
     </KeyboardView>
   )
 }
 
 const keyExtractor = (item: TServiceItem) => item.serviceId
 
-const ItemSeparatorComponent = () => (
-  <View
-    style={{
-      width: '100%',
-      paddingLeft: '5%',
-      flexDirection: 'column',
-      justifyContent: 'center',
-    }}>
-    <View style={styles.divider} />
-  </View>
-)
-
-const styles = StyleSheet.create({
-  header: {
-    padding: 16,
-    paddingTop: 0,
-    backgroundColor: darkTheme.palette.background.primary,
-  },
-  input: {
-    color: 'white',
-    fontSize: 15,
-    flexGrow: 2,
-  },
-
-  inputWrapper: {
-    flexDirection: 'row',
-    padding: 6,
-    paddingLeft: 8,
-    alignItems: 'center',
-    paddingRight: 8,
-    backgroundColor: darkTheme.palette.content.secondary,
-    borderRadius: 8,
-    gap: 4,
-  },
-  wrapper: { flex: 1, backgroundColor: darkTheme.palette.background.secondary },
-  serviceWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    padding: 16,
-    paddingTop: 14,
-    paddingBottom: 14,
-  },
-  divider: {
-    width: '95%',
-    backgroundColor: darkTheme.palette.content.secondary,
-    height: 1,
-  },
-})
+const separatorLine = () => <Line marginHorizontal={9} />
