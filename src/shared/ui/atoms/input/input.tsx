@@ -5,59 +5,58 @@ import React, {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { darkTheme, styled } from '@shared/ui/theme'
+import { useTheme, styled } from '@shared/ui/theme'
 import { IconClose } from '@shared/ui/icons'
 import { ReactNode } from 'react'
 
-const Wrapper = styled(View)`
+const Wrapper = styled(View)<{
+  //хз почему но padding по вертикали Больше чем нужно, не знаю как поправить
+}>`
   flex-direction: row;
-  padding: ${({ theme }) =>
-    theme.spacing(
-      3 / 4,
-    )}px; //хз почему но padding Больше чем нужно, не знаю как поправить
-  padding-left: ${({ theme }) => theme.spacing(1)}px;
-  padding-right: ${({ theme }) => theme.spacing(1)}px;
+  padding: ${({ theme }) => theme.spacing(3 / 4)}px
+    ${({ theme }) => theme.spacing(1)}px
+    ${({ theme }) => theme.spacing(3 / 4)}px
+    ${({ theme }) => theme.spacing(1)}px;
   align-items: center;
   background-color: ${({ theme }) => theme.palette.content.secondary};
   border-radius: ${({ theme }) => theme.spacing(1)}px;
   gap: ${({ theme }) => theme.spacing(1 / 2)}px;
 `
 const InputNode = styled(TextInput)`
-  color: white;
+  color: ${({ theme }) => theme.palette.text.primary};
   font-size: 15px;
   flex-grow: 2;
 `
 
 export interface Props extends TextInputProps {
-  useClearButton?: boolean
+  hasClearButton?: boolean
   leftSection?: ReactNode
   wrapperStyle?: ViewProps['style']
 }
 
 export const Input = ({
-  useClearButton,
+  hasClearButton,
   leftSection,
   wrapperStyle,
   ...props
 }: Props) => {
+  const theme = useTheme()
+  const handleOnPress = () => props.onChangeText && props.onChangeText('')
   return (
     <Wrapper style={wrapperStyle}>
       {leftSection}
 
       <InputNode
-        placeholderTextColor={darkTheme.palette.text.tertiary}
+        placeholderTextColor={theme.palette.text.tertiary}
         keyboardAppearance='dark'
         {...props}
       />
 
-      {useClearButton ? (
-        <TouchableOpacity
-          onPress={() => props.onChangeText && props.onChangeText('')}>
-          <IconClose color={darkTheme.palette.content.tertiary} />
+      {hasClearButton ? (
+        <TouchableOpacity onPress={handleOnPress}>
+          <IconClose color={theme.palette.content.tertiary} />
         </TouchableOpacity>
-      ) : (
-        ''
-      )}
+      ) : null}
     </Wrapper>
   )
 }

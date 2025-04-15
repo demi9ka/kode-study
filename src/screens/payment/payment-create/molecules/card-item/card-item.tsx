@@ -1,5 +1,5 @@
 import React, { View } from 'react-native'
-import { darkTheme, styled } from '@shared/ui/theme'
+import { useTheme, styled } from '@shared/ui/theme'
 import { Typography } from '@shared/ui/atoms'
 import { ReactNode } from 'react'
 import { IconChevronDown } from '@shared/ui/icons'
@@ -17,24 +17,22 @@ const Wrapper = styled.TouchableOpacity`
   padding-top: ${({ theme }) => theme.spacing(2.6)}px;
 `
 const Content = styled(View)`
-  flex: 1;
   flex-grow: 2;
   justify-content: center;
   gap: 3px;
 `
 
 export const CardItem = ({ description, leftSection, title }: Props) => {
+  const theme = useTheme()
   return (
     <>
       <Wrapper>
         {leftSection}
         <Content>
           <Typography variant='body15Regular'>{title}</Typography>
-          <Typography variant='body15Regular' style={{ fontSize: 13 }}>
-            {description}
-          </Typography>
+          <Typography variant='caption1'>{description}</Typography>
         </Content>
-        <IconChevronDown color={darkTheme.palette.content.tertiary} />
+        <IconChevronDown color={theme.palette.content.tertiary} />
       </Wrapper>
     </>
   )

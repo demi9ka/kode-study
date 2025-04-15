@@ -18,12 +18,12 @@ export default Meta
 export const CardItem = ({ ...args }: Props) => {
   return (
     <Wrapper>
-      <CardItemComponent
-        description='Описание'
-        leftSection={<Icon1GIBDD />}
-        title='Title'
-      />
       <CardItemComponent {...args} />
     </Wrapper>
   )
+}
+CardItem.Default = {
+  title: 'Заголовок по умолчанию',
+  description: 'Значение по умолчанию',
+  leftSection: <Icon1GIBDD />,
 }

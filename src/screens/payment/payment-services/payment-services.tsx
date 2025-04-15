@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamsList } from '@routing/app-navigation/types'
 import { KeyboardView } from '@shared/ui/templates'
-import { darkTheme } from '@shared/ui/theme'
+import { useTheme } from '@shared/ui/theme'
 import {
   View,
   Image,
@@ -15,8 +15,8 @@ import { TServiceItem } from './types'
 import { useState } from 'react'
 import { IconSearch } from '@shared/ui/icons'
 import { ListItem } from '@shared/ui/molecules/list-item'
-import styled from 'styled-components'
-import { Input } from '@shared/ui/molecules'
+import { styled } from '@shared/ui/theme'
+import { Input } from '@shared/ui/atoms'
 import { Line } from '@shared/ui/atoms'
 
 export type PaymentServicesProps = StackScreenProps<
@@ -33,11 +33,15 @@ const Header = styled(View)`
   padding-top: 0;
   background-color: ${({ theme }) => theme.palette.background.primary};
 `
+const ListItemImage = styled(Image)`
+  width: ${({ theme }) => theme.spacing(5)}px;
+  height: ${({ theme }) => theme.spacing(5)}px;
+`
 
 export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
   const isLoading = false
   const [search, setSearch] = useState('')
-
+  const theme = useTheme()
   const openCreate = (serviceId: string, title: string) => {
     navigation.navigate('paymentCreate', { serviceId, title })
   }
@@ -48,11 +52,9 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
     return (
       <ListItem
         content={serviceName}
-        leftSection={
-          <Image style={{ width: 40, height: 40 }} source={serviceIcon} />
-        }
+        leftSection={<ListItemImage source={serviceIcon} />}
         onPress={() => openCreate(serviceId, serviceName)}
-        useLine={true}
+        hasLine
       />
     )
   }
@@ -60,6 +62,9 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
   if (isLoading) {
     return <ActivityIndicator />
   }
+  const services_data = services.filter(({ serviceName }) =>
+    serviceName.toUpperCase().includes(search.toUpperCase()),
+  )
 
   return (
     <KeyboardView>
@@ -72,9 +77,7 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
               tintColor='white'
             />
           }
-          data={services.filter(({ serviceName }) =>
-            serviceName.toUpperCase().includes(search.toUpperCase()),
-          )}
+          data={services_data}
           renderItem={renderItem}
           ItemSeparatorComponent={separatorLine}
           keyExtractor={keyExtractor}
@@ -88,7 +91,7 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
                 leftSection={
                   <IconSearch
                     size={24}
-                    color={darkTheme.palette.content.tertiary}
+                    color={theme.palette.content.tertiary}
                   />
                 }
                 placeholder='Поиск'

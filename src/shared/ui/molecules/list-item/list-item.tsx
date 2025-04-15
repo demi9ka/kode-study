@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 import { TouchableOpacityProps } from 'react-native-gesture-handler'
 
 export interface Props extends TouchableOpacityProps {
-  useLine?: boolean
+  hasLine?: boolean
   leftSection: ReactNode
   content: ReactNode
   onPress?: VoidFunction
@@ -23,14 +23,14 @@ const Content = styled(Typography)`
   word-break: break-word;
 `
 
-export const ListItem = ({ content, leftSection, useLine, onPress }: Props) => {
+export const ListItem = ({ content, leftSection, hasLine, onPress }: Props) => {
   return (
     <>
       <Wrapper onPress={onPress}>
         {leftSection}
         <Content variant='body15Regular'>{content}</Content>
       </Wrapper>
-      {useLine ? <Line marginHorizontal={9} /> : ''}
+      {hasLine ? <Line marginHorizontal={9} /> : null}
     </>
   )
 }

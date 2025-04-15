@@ -7,11 +7,6 @@ import { HomeTabsParamsList } from '@routing/home-tabs-navigation'
 import { CompositeScreenProps } from '@react-navigation/native'
 import { RootStackParamsList } from '@routing/app-navigation/types'
 
-// export type PaymentMainProps = StackScreenProps<
-//   HomeTabsParamsList,
-//   'PaymentMain'
-// >
-
 export type MainStackProps = StackScreenProps<RootStackParamsList>
 
 export type PaymentMainProps = CompositeScreenProps<
@@ -29,17 +24,19 @@ const Header = styled(View)`
   padding: 16px;
   height: 100px;
 `
+const Title = styled(Typography)`
+  font-weight: 700;
+`
 
 export const PaymentMain = ({ navigation }: PaymentMainProps) => {
+  const handlerPressMobile = () => navigation.navigate('paymentServices')
   return (
     <Wrapper>
       <Header>
-        <Typography variant='largeTitle'>Платежи</Typography>
+        <Title variant='largeTitle'>Платежи</Title>
       </Header>
       <List
-        onPressMobile={() => {
-          navigation.navigate('paymentServices')
-        }}
+        onPressMobile={handlerPressMobile}
         onPressInternet={() => {}}
         onPressJKH={() => {}}
       />

@@ -1,8 +1,8 @@
 import { Icon1Internet, Icon1JKH, Icon1Mobile } from '@shared/ui/icons'
 import { ListItem } from '@shared/ui/molecules/list-item'
-import { darkTheme } from '@shared/ui/theme'
+import { useTheme } from '@shared/ui/theme'
 import { View } from 'react-native'
-import styled from 'styled-components'
+import { styled } from '@shared/ui/theme'
 
 const IconWrapper = styled(View)`
   width: 40px;
@@ -20,16 +20,17 @@ type Props = {
 }
 
 export const List = ({ onPressInternet, onPressJKH, onPressMobile }: Props) => {
+  const theme = useTheme()
   return (
     <View>
       <ListItem
         content={'Мобильная связь'}
         leftSection={
           <IconWrapper>
-            <Icon1Mobile size={23} color={darkTheme.palette.button.primary} />
+            <Icon1Mobile size={23} color={theme.palette.button.primary} />
           </IconWrapper>
         }
-        useLine={true}
+        hasLine
         onPress={onPressMobile}
       />
       <ListItem
@@ -37,17 +38,17 @@ export const List = ({ onPressInternet, onPressJKH, onPressMobile }: Props) => {
         onPress={onPressJKH}
         leftSection={
           <IconWrapper>
-            <Icon1JKH size={23} color={darkTheme.palette.button.primary} />
+            <Icon1JKH size={23} color={theme.palette.button.primary} />
           </IconWrapper>
         }
-        useLine={true}
+        hasLine={true}
       />
       <ListItem
         content={'Интернет'}
         onPress={onPressInternet}
         leftSection={
           <IconWrapper>
-            <Icon1Internet size={23} color={darkTheme.palette.button.primary} />
+            <Icon1Internet size={23} color={theme.palette.button.primary} />
           </IconWrapper>
         }
       />

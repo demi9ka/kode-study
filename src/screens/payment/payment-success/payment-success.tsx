@@ -4,7 +4,7 @@ import { Typography } from '@shared/ui/atoms'
 import { Images } from '@shared/ui/images'
 import { PrimaryButton } from '@shared/ui/molecules'
 import { View, Image } from 'react-native'
-import styled from 'styled-components'
+import { styled } from '@shared/ui/theme'
 
 export type PaymentSuccessProps = StackScreenProps<
   RootStackParamsList,
@@ -29,37 +29,30 @@ const Footer = styled(View)`
   padding: ${({ theme }) => theme.spacing(2)}px;
   padding-bottom: ${({ theme }) => theme.spacing(3)}px;
 `
-
+const ImageComponent = styled(Image)`
+  width: ${({ theme }) => theme.spacing(18.75)}px;
+  height: ${({ theme }) => theme.spacing(18.75)}px;
+`
 export const PaymentSuccess = ({ navigation, route }: PaymentSuccessProps) => {
   const backToMenu = () => {
     navigation.popToTop()
   }
-
+  const amount = new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(route.params.amount)
   return (
     <Wrapper>
       <ContentWrapper>
-        <Image
-          style={{
-            width: 150,
-            height: 150,
-          }}
-          source={Images.successTransaction}
-        />
+        <ImageComponent source={Images.successTransaction} />
         <Title variant='body17Regular'>Оплачено</Title>
         <Typography variant='title'>
-          {new Intl.NumberFormat('ru-RU', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(route.params.amount)}
+          {amount}
           {' ₽'}
         </Typography>
       </ContentWrapper>
       <Footer>
-        <PrimaryButton onPress={backToMenu}>
-          <Typography variant='body15Regular' align='center'>
-            Готово
-          </Typography>
-        </PrimaryButton>
+        <PrimaryButton children='Готово' onPress={backToMenu} />
       </Footer>
     </Wrapper>
   )

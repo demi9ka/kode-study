@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Input as InputComponent, Props } from './input'
 import { styled } from '@shared/ui/theme'
 import { Icon1GIBDD } from '@shared/ui/icons'
@@ -16,17 +16,13 @@ const Meta = {
 export default Meta
 
 export const Input = (args: Props) => {
-  const [value, setValue] = useState('')
   return (
     <Wrapper>
-      <InputComponent
-        value={value}
-        useClearButton={!!value.length}
-        onChangeText={v => setValue(v)}
-        leftSection={<Icon1GIBDD />}
-        placeholder='Введите значение'
-      />
       <InputComponent {...args} />
     </Wrapper>
   )
+}
+Input.args = {
+  hasClearButton: true,
+  leftSection: <Icon1GIBDD />,
 }

@@ -4,23 +4,24 @@ import { styled } from '@shared/ui/theme'
 
 const Wrapper = styled.View`
   flex: 1;
-  gap: ${({ theme }) => theme.spacing(2)}px;
   background-color: ${({ theme }) => theme.palette.background.primary};
 `
 
 const Meta = {
-  title: 'ui/InfoItem',
+  title: 'payment-confirm/molecules/InfoItem',
   component: InfoItemComponent,
 }
 
 export default Meta
 
-export const InfoItem = ({ ...args }: Props) => {
+export const InfoItem = (args: Props) => {
   return (
     <Wrapper>
-      <InfoItemComponent value='Описание' title='Title' />
-      <InfoItemComponent value='Название' title='Привет' />
       <InfoItemComponent {...args} />
     </Wrapper>
   )
+}
+InfoItem.args = {
+  title: 'Заголовок по умолчанию',
+  value: 'Значение по умолчанию',
 }

@@ -1,9 +1,8 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamsList } from '@routing/app-navigation/types'
-import { darkTheme } from '@shared/ui/theme'
 import { View, Text, TouchableOpacity, Linking } from 'react-native'
 import { InfoItem } from './molecules/info-item'
-import styled from 'styled-components'
+import { styled } from '@shared/ui/theme'
 import { Typography } from '@shared/ui/atoms'
 import { PrimaryButton } from '@shared/ui/molecules'
 import { services } from '../payment-services/constants'
@@ -23,11 +22,22 @@ const Footer = styled(View)`
   justify-content: flex-end;
   gap: ${({ theme }) => theme.spacing(3)}px;
 `
+const Link = styled(Typography)`
+  text-align: center;
+  text-decoration-line: underline;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`
 
 export const PaymentConfirm = ({ navigation, route }: PaymentSuccessProps) => {
   const confirmTransaction = () => {
     navigation.navigate('paymentSuccess', { amount: route.params.amount })
   }
+
+  const mobil_operator = services.find(
+    ({ serviceId }) => serviceId === route.params.serviceId,
+  )!.serviceName
+  const cashback = (route.params.amount * 0.1).toFixed(2)
+
   const openLink = () => {
     Linking.openURL('https://career.kode.ru/training/') // Замените на ваш URL
       .catch(err => console.error('Failed to open URL:', err))
@@ -36,39 +46,18 @@ export const PaymentConfirm = ({ navigation, route }: PaymentSuccessProps) => {
     <Wrapper>
       <InfoItem title='Карта для оплаты' value='Карта для зарплаты' />
       <InfoItem title='Телефон получателя' value={route.params.phone} />
-      <InfoItem
-        title='Мобильный оператор'
-        value={
-          services.find(
-            ({ serviceId }) => serviceId === route.params.serviceId,
-          )!.serviceName
-        }
-      />
+      <InfoItem title='Мобильный оператор' value={mobil_operator} />
       <InfoItem title='Имя получателя' value='Денис Гладкий' />
       <InfoItem title='Сумма платежа' value={`${route.params.amount} ₽`} />
-      <InfoItem
-        title='Кешбек'
-        value={`${(route.params.amount * 0.1).toFixed(2)} ₽`}
-      />
+      <InfoItem title='Кешбек' value={`${cashback} ₽`} />
 
       <Footer>
-        <PrimaryButton onPress={confirmTransaction}>
-          <Typography variant='body15Regular' align='center'>
-            Продолжить
-          </Typography>
-        </PrimaryButton>
+        <PrimaryButton children={'Продолжить'} onPress={confirmTransaction} />
         <TouchableOpacity onPress={openLink}>
-          <Typography
-            variant='body15Regular'
-            style={{
-              //   fontSize: 11,
-              textAlign: 'center',
-              textDecorationLine: 'underline',
-              color: darkTheme.palette.text.secondary,
-            }}>
+          <Link variant='caption2'>
             Нажимая «Подтвердить», вы соглашаетесь с условиями проведения
             операции
-          </Typography>
+          </Link>
         </TouchableOpacity>
       </Footer>
     </Wrapper>
