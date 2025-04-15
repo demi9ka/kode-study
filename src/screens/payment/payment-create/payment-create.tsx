@@ -12,14 +12,13 @@ import {
   ListRenderItem,
   Pressable,
 } from 'react-native'
-import { services } from '../payment-services/constants'
 import { balance, values } from './constansts'
-// import { KeyboardView } from '@shared/ui/templates'
 import styled from 'styled-components'
 import { Line, Typography } from '@shared/ui/atoms'
 import { CardItem } from './molecules/card-item'
 import { Input, PrimaryButton } from '@shared/ui/molecules'
 import { KeyboardView } from '@shared/ui/templates'
+import { services } from '../payment-services/constants'
 
 export type TPaymentCreateProps = StackScreenProps<
   RootStackParamsList,
@@ -126,7 +125,7 @@ export const PaymentCreate = ({ navigation, route }: TPaymentCreateProps) => {
             gap: darkTheme.spacing(1),
             paddingRight: darkTheme.spacing(2),
           }}
-          placeholder='Номер телефона'
+          placeholder='Номе телефона'
           onChangeText={v => setPhone(v.slice(0, 11))} //Не сумел сделать форматирование номера(
           leftSection={
             <Image

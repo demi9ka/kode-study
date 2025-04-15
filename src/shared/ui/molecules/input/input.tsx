@@ -43,13 +43,13 @@ export const Input = ({
   return (
     <Wrapper style={wrapperStyle}>
       {leftSection}
+
       <InputNode
         placeholderTextColor={darkTheme.palette.text.tertiary}
-        // value={value || ''}
-        // onChangeText={onChangeText ? onChangeText : v => {}}
         keyboardAppearance='dark'
         {...props}
       />
+
       {useClearButton ? (
         <TouchableOpacity
           onPress={() => props.onChangeText && props.onChangeText('')}>
