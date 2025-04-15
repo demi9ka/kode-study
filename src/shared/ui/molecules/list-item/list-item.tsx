@@ -2,8 +2,9 @@ import React from 'react-native'
 import { styled } from '@shared/ui/theme'
 import { Line, Typography } from '@shared/ui/atoms'
 import { ReactNode } from 'react'
+import { TouchableOpacityProps } from 'react-native-gesture-handler'
 
-export type Props = {
+export interface Props extends TouchableOpacityProps {
   useLine?: boolean
   leftSection: ReactNode
   content: ReactNode
