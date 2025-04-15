@@ -4,10 +4,19 @@ import { View } from 'react-native'
 import { List } from '@shared/ui/templates/list'
 import { Typography } from '@shared/ui/atoms'
 import { HomeTabsParamsList } from '@routing/home-tabs-navigation'
+import { CompositeScreenProps } from '@react-navigation/native'
+import { RootStackParamsList } from '@routing/app-navigation/types'
 
-export type PaymentMainProps = StackScreenProps<
-  HomeTabsParamsList,
-  'PaymentMain'
+// export type PaymentMainProps = StackScreenProps<
+//   HomeTabsParamsList,
+//   'PaymentMain'
+// >
+
+export type MainStackProps = StackScreenProps<RootStackParamsList>
+
+export type PaymentMainProps = CompositeScreenProps<
+  StackScreenProps<HomeTabsParamsList, 'PaymentMain'>,
+  MainStackProps
 >
 
 const Wrapper = styled(View)`
