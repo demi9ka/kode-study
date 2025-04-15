@@ -2,13 +2,27 @@ import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamsList } from '@routing/app-navigation/types'
 import { darkTheme } from '@shared/ui/theme'
 import { View, Text, TouchableOpacity, Linking } from 'react-native'
-import { StyleSheet } from 'react-native'
+import { InfoItem } from './molecules/info-item'
+import styled from 'styled-components'
+import { Typography } from '@shared/ui/atoms'
+import { PrimaryButton } from '@shared/ui/molecules'
 import { services } from '../payment-services/constants'
 
 export type PaymentSuccessProps = StackScreenProps<
   RootStackParamsList,
   'paymentConfirm'
 >
+
+const Wrapper = styled(View)`
+  flex: 1;
+  background-color: ${({ theme }) => theme.palette.background.secondary};
+`
+const Footer = styled(View)`
+  flex-grow: 2;
+  padding: ${({ theme }) => theme.spacing(2)}px;
+  justify-content: flex-end;
+  gap: ${({ theme }) => theme.spacing(3)}px;
+`
 
 export const PaymentConfirm = ({ navigation, route }: PaymentSuccessProps) => {
   const confirmTransaction = () => {
@@ -19,102 +33,44 @@ export const PaymentConfirm = ({ navigation, route }: PaymentSuccessProps) => {
       .catch(err => console.error('Failed to open URL:', err))
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.elem}>
-        <Text style={styles.title}>Карта для оплаты</Text>
-        <Text style={styles.value}>Карта зарплатная</Text>
-      </View>
-      <View style={styles.elem}>
-        <Text style={styles.title}>Телефон получателя</Text>
-        <Text style={styles.value}>{route.params.phone}</Text>
-      </View>
-      <View style={styles.elem}>
-        <Text style={styles.title}>Мобильный оператор</Text>
-        <Text style={styles.value}>
-          {
-            services.find(
-              ({ serviceId }) => serviceId === route.params.serviceId,
-            )!.serviceName
-          }
-        </Text>
-      </View>
-      <View style={styles.elem}>
-        <Text style={styles.title}>Имя получателя</Text>
-        <Text style={styles.value}>Денис Гладкий</Text>
-      </View>
-      <View style={styles.elem}>
-        <Text style={styles.title}>Сумма платежа</Text>
-        <Text style={styles.value}>{route.params.amount} ₽</Text>
-      </View>
-      <View style={styles.elem}>
-        <Text style={styles.title}>Кешбек</Text>
-        <Text style={styles.value}>
-          {(route.params.amount * 0.1).toFixed(2)} ₽
-        </Text>
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={confirmTransaction}>
-          <Text style={styles.button_text}>Продолжить</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.linkWrapper} onPress={openLink}>
-          <Text style={styles.link}>
+    <Wrapper>
+      <InfoItem title='Карта для оплаты' value='Карта для зарплаты' />
+      <InfoItem title='Телефон получателя' value={route.params.phone} />
+      <InfoItem
+        title='Мобильный оператор'
+        value={
+          services.find(
+            ({ serviceId }) => serviceId === route.params.serviceId,
+          )!.serviceName
+        }
+      />
+      <InfoItem title='Имя получателя' value='Денис Гладкий' />
+      <InfoItem title='Сумма платежа' value={`${route.params.amount} ₽`} />
+      <InfoItem
+        title='Кешбек'
+        value={`${(route.params.amount * 0.1).toFixed(2)} ₽`}
+      />
+
+      <Footer>
+        <PrimaryButton onPress={confirmTransaction}>
+          <Typography variant='body15Regular' align='center'>
+            Продолжить
+          </Typography>
+        </PrimaryButton>
+        <TouchableOpacity onPress={openLink}>
+          <Typography
+            variant='body15Regular'
+            style={{
+              //   fontSize: 11,
+              textAlign: 'center',
+              textDecorationLine: 'underline',
+              color: darkTheme.palette.text.secondary,
+            }}>
             Нажимая «Подтвердить», вы соглашаетесь с условиями проведения
             операции
-          </Text>
+          </Typography>
         </TouchableOpacity>
-      </View>
-    </View>
+      </Footer>
+    </Wrapper>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: darkTheme.palette.background.secondary,
-  },
-  elem: {
-    padding: 8,
-    paddingHorizontal: 0,
-    marginHorizontal: 16,
-    marginVertical: 9,
-    borderBottomWidth: 1,
-    borderColor: darkTheme.palette.content.secondary, // Цвет границы
-    borderStyle: 'dashed', // Стиль границы - пунктирная
-  },
-  title: {
-    fontSize: 13,
-    color: darkTheme.palette.text.tertiary,
-    marginBottom: 4,
-  },
-  value: {
-    fontSize: 15,
-    color: darkTheme.palette.text.primary,
-  },
-  footer: {
-    flexGrow: 2,
-    padding: 16,
-    justifyContent: 'flex-end',
-    gap: 24,
-  },
-  button: {
-    width: '100%',
-    padding: 20,
-    paddingHorizontal: 0,
-    borderRadius: 26,
-    backgroundColor: darkTheme.palette.accent.primary,
-  },
-  button_text: {
-    width: '100%',
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 600,
-    color: darkTheme.palette.text.primary,
-  },
-  linkWrapper: {},
-  link: {
-    width: '100%',
-    textAlign: 'center',
-    color: darkTheme.palette.text.secondary,
-    textDecorationLine: 'underline',
-  },
-})
