@@ -14,15 +14,16 @@ import {
 } from '@shared/ui/icons'
 import { PaymentMain } from '@screens/payment/payment-main'
 import { StatusBar } from 'react-native'
-import { darkTheme } from '@shared/ui/theme'
+import { useTheme } from '@shared/ui/theme'
 
 const HomeTabs = createBottomTabNavigator<HomeTabsParamsList>()
 
 export const HomeTabsNavigation = () => {
+  const theme = useTheme()
   return (
     <>
       <StatusBar
-        backgroundColor={darkTheme.palette.background.primary}
+        backgroundColor={theme.palette.background.primary}
         barStyle='light-content'
       />
       <HomeTabs.Navigator

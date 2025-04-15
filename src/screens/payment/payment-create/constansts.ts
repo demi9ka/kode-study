@@ -5,3 +5,4 @@ export const values = [
   { id: '4', value: 2500 },
   { id: '5', value: 5000 },
 ]
+export const balance = 457334.23

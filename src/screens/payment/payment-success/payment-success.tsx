@@ -1,88 +1,59 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamsList } from '@routing/app-navigation/types'
+import { Typography } from '@shared/ui/atoms'
 import { Images } from '@shared/ui/images'
-import { darkTheme } from '@shared/ui/theme'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { StyleSheet, Image } from 'react-native'
+import { PrimaryButton } from '@shared/ui/molecules'
+import { View, Image } from 'react-native'
+import { styled } from '@shared/ui/theme'
 
 export type PaymentSuccessProps = StackScreenProps<
   RootStackParamsList,
   'paymentSuccess'
 >
 
+const Wrapper = styled(View)`
+  flex: 1;
+  background-color: ${({ theme }) => theme.palette.background.secondary};
+`
+const ContentWrapper = styled(View)`
+  align-items: center;
+  flex-grow: 2;
+  justify-content: center;
+`
+const Title = styled(Typography)`
+  padding-top: ${({ theme }) => theme.spacing(2)}px;
+  padding-bottom: ${({ theme }) => theme.spacing(1)}px;
+  color: ${({ theme }) => theme.palette.text.tertiary};
+`
+const Footer = styled(View)`
+  padding: ${({ theme }) => theme.spacing(2)}px;
+  padding-bottom: ${({ theme }) => theme.spacing(3)}px;
+`
+const ImageComponent = styled(Image)`
+  width: ${({ theme }) => theme.spacing(18.75)}px;
+  height: ${({ theme }) => theme.spacing(18.75)}px;
+`
 export const PaymentSuccess = ({ navigation, route }: PaymentSuccessProps) => {
   const backToMenu = () => {
     navigation.popToTop()
   }
-
+  const amount = new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(route.params.amount)
   return (
-    <View style={styles.container}>
-      <View style={styles.noteWrapper}>
-        <Image
-          style={{
-            width: 150,
-            height: 150,
-          }}
-          source={Images.successTransaction}
-        />
-        <Text
-          style={{
-            fontSize: 17,
-            paddingTop: 16,
-            paddingBottom: 8,
-            color: darkTheme.palette.text.tertiary,
-          }}>
-          Оплачено
-        </Text>
-        <Text
-          style={{
-            fontSize: 28,
-            fontWeight: 700,
-            color: darkTheme.palette.text.primary,
-          }}>
-          {new Intl.NumberFormat('ru-RU', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(route.params.amount)}
+    <Wrapper>
+      <ContentWrapper>
+        <ImageComponent source={Images.successTransaction} />
+        <Title variant='body17Regular'>Оплачено</Title>
+        <Typography variant='title'>
+          {amount}
           {' ₽'}
-        </Text>
-      </View>
-      <View
-        style={{
-          padding: 16,
-          paddingBottom: 24,
-        }}>
-        <TouchableOpacity style={styles.button} onPress={backToMenu}>
-          <Text style={styles.buttonText}>Готово</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        </Typography>
+      </ContentWrapper>
+      <Footer>
+        <PrimaryButton children='Готово' onPress={backToMenu} />
+      </Footer>
+    </Wrapper>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: darkTheme.palette.background.secondary,
-  },
-  noteWrapper: {
-    alignItems: 'center',
-    flexGrow: 2,
-    justifyContent: 'center',
-  },
-  button: {
-    width: '100%',
-    padding: 20,
-    paddingHorizontal: 0,
-
-    borderRadius: 26,
-    backgroundColor: darkTheme.palette.accent.primary,
-  },
-  buttonText: {
-    width: '100%',
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 600,
-    color: darkTheme.palette.text.primary,
-  },
-})
