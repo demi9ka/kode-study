@@ -1,24 +1,20 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-
 import { homeTabsOptions } from './config'
 import { HomeTabsParamsList } from './types'
-
-import { HomeMain } from '@screens/home'
-import { BankMain } from '@screens/bank'
-import { ProfileMain } from '@screens/profile'
 import {
   IconBank,
   IconCamera1,
   IconMainProduct,
   IconPayment,
 } from '@shared/ui/icons'
-import { PaymentMain } from '@screens/payment/payment-main'
 import { StatusBar } from 'react-native'
 import { useTheme } from '@shared/ui/theme'
+import { HomeScreen, PaymentScreen, ProfileScreen } from './screens'
+import { BankConnector } from '@screens/bank'
 
 const HomeTabs = createBottomTabNavigator<HomeTabsParamsList>()
 
-export const HomeTabsNavigation = () => {
+export const HomeTabsNavigator = () => {
   const theme = useTheme()
   return (
     <>
@@ -35,7 +31,7 @@ export const HomeTabsNavigation = () => {
             tabBarIcon: IconMainProduct,
           }}
           name='HomeMain'
-          component={HomeMain}
+          component={HomeScreen}
         />
         <HomeTabs.Screen
           options={{
@@ -44,7 +40,7 @@ export const HomeTabsNavigation = () => {
             tabBarIcon: IconPayment,
           }}
           name='PaymentMain'
-          component={PaymentMain}
+          component={PaymentScreen}
         />
         <HomeTabs.Screen
           options={{
@@ -52,7 +48,7 @@ export const HomeTabsNavigation = () => {
             tabBarIcon: IconBank,
           }}
           name='BankMain'
-          component={BankMain}
+          component={BankConnector}
         />
         <HomeTabs.Screen
           options={{
@@ -60,7 +56,7 @@ export const HomeTabsNavigation = () => {
             tabBarIcon: IconCamera1,
           }}
           name='ProfileMain'
-          component={ProfileMain}
+          component={ProfileScreen}
         />
       </HomeTabs.Navigator>
     </>

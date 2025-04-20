@@ -2,7 +2,9 @@ import {
   CardStyleInterpolators,
   StackNavigationOptions,
 } from '@react-navigation/stack'
+
 import { View } from 'react-native'
+
 import { darkTheme } from '@shared/ui/theme'
 import { IconBack } from '@shared/ui/icons'
 

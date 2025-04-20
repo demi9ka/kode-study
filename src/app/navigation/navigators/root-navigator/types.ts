@@ -1,7 +1,6 @@
-import { HomeTabsParamsList } from '@routing/home-tabs-navigation'
+import { HomeTabsParamsList } from '../home-tabs-navigator'
 
-export type RootStackParamsList = {
-  HomeTabs: HomeTabsParamsList
+export type RootStackScreenParams = {
   paymentServices: undefined
   paymentCreate: { serviceId: string; title: string }
   paymentConfirm: {
@@ -14,3 +13,7 @@ export type RootStackParamsList = {
     amount: number
   }
 }
+
+export type RootStackParamsList = {
+  HomeTabs: HomeTabsParamsList
+} & RootStackScreenParams

@@ -1,14 +1,17 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import { RootStackParamsList } from './types'
-import { PaymentCreate, PaymentServices } from '@screens/payment'
 import { rootStackOptions } from './config'
-import { HomeTabsNavigation } from '@routing/home-tabs-navigation'
-import { PaymentConfirm } from '@screens/payment/payment-confirm'
-import { PaymentSuccess } from '@screens/payment/payment-success'
+import { HomeTabNavigatorConnector } from '../home-tabs-navigator'
+import {
+  PaymentConfirmScreen,
+  PaymentCreateScreen,
+  PaymentServicesScreen,
+  PaymentSuccessScreen,
+} from './screens'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
-export const AppNavigation = () => {
+export const RootNavigator = () => {
   const isAuth = true
 
   return (
@@ -17,27 +20,27 @@ export const AppNavigation = () => {
       screenOptions={rootStackOptions}>
       <RootStack.Screen
         name='HomeTabs'
-        component={HomeTabsNavigation}
+        component={HomeTabNavigatorConnector}
         options={{ headerShown: false }}
       />
       <RootStack.Screen
         name='paymentServices'
-        component={PaymentServices}
+        component={PaymentServicesScreen}
         options={{ headerTitle: 'Мобильная связь' }}
       />
       <RootStack.Screen
         name='paymentCreate'
-        component={PaymentCreate}
+        component={PaymentCreateScreen}
         options={({ route }) => ({ headerTitle: route.params.title })}
       />
       <RootStack.Screen
         name='paymentConfirm'
-        component={PaymentConfirm}
+        component={PaymentConfirmScreen}
         options={{ headerTitle: 'Подтверждение' }}
       />
       <RootStack.Screen
         name='paymentSuccess'
-        component={PaymentSuccess}
+        component={PaymentSuccessScreen}
         options={{ headerShown: false }}
       />
     </RootStack.Navigator>

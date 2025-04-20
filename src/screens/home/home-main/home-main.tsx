@@ -1,5 +1,6 @@
+import { useTheme } from '@shared/ui/theme'
 import { DummyScreen } from '@shared/ui/templates'
 
 export const HomeMain = () => {
-  return <DummyScreen title='Главная' />
+  return <DummyScreen title='Привет' />
 }
