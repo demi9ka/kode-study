@@ -1,50 +1,49 @@
-import { Images } from '@shared/ui/images'
-import { TServiceItem } from './types'
+import { TServiceResponce } from './types'
 
-export const services: TServiceItem[] = [
+export const services: TServiceResponce[] = [
   {
     serviceId: '1',
     serviceName: 'МТС',
-    serviceIcon: Images.mts,
+    serviceUrl: 'mts',
   },
   {
     serviceId: '2',
     serviceName: 'МегаФон',
-    serviceIcon: Images.megafon,
+    serviceUrl: 'megafon',
   },
   {
     serviceId: '3',
     serviceName: 'Beeline',
-    serviceIcon: Images.beeline,
+    serviceUrl: 'beeline',
   },
   {
     serviceId: '4',
     serviceName: 'Tele2',
-    serviceIcon: Images.tele2,
+    serviceUrl: 'tele2',
   },
   {
     serviceId: '5',
     serviceName: 'Yota',
-    serviceIcon: Images.yota,
+    serviceUrl: 'yota',
   },
   {
     serviceId: '6',
     serviceName: 'Kode Mobile',
-    serviceIcon: Images.kode,
+    serviceUrl: 'kode',
   },
   {
     serviceId: '7',
     serviceName: 'Ростелеком',
-    serviceIcon: Images.rostelecom,
+    serviceUrl: 'rostelecom',
   },
   {
     serviceId: '8',
     serviceName: 'Тинькофф Мобайл',
-    serviceIcon: Images.tinkoff,
+    serviceUrl: 'tinkoff',
   },
   {
     serviceId: '9',
     serviceName: 'Голден телеком',
-    serviceIcon: Images.golden,
+    serviceUrl: 'golden',
   },
 ]

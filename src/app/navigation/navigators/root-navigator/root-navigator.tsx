@@ -31,7 +31,7 @@ export const RootNavigator = () => {
       <RootStack.Screen
         name='paymentCreate'
         component={PaymentCreateScreen}
-        options={({ route }) => ({ headerTitle: route.params.title })}
+        options={({ route }) => ({ headerTitle: route.params.name })}
       />
       <RootStack.Screen
         name='paymentConfirm'

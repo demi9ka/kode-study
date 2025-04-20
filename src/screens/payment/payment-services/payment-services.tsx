@@ -7,19 +7,20 @@ import {
   ListRenderItem,
   RefreshControl,
   ActivityIndicator,
+  ImageSourcePropType,
 } from 'react-native'
-import { TServiceItem } from './types'
 import { IconSearch } from '@shared/ui/icons'
 import { ListItem } from '@shared/ui/molecules/list-item'
 import { styled } from '@shared/ui/theme'
 import { Input } from '@shared/ui/atoms'
 import { Line } from '@shared/ui/atoms'
+import { TPaymentService } from './types'
 
 type Props = {
-  services_data: TServiceItem[]
+  services_data: TPaymentService[]
   search: string
   setSearch: (v: string) => void
-  openCreate: (serviceId: string, title: string) => void
+  openCreate: (id: string) => void
   isLoading: boolean
 }
 const Wrapper = styled(View)`
@@ -45,21 +46,25 @@ export const PaymentServices = ({
 }: Props) => {
   const theme = useTheme()
 
-  const renderItem: ListRenderItem<TServiceItem> = ({
-    item: { serviceId, serviceIcon, serviceName },
+  const renderItem: ListRenderItem<TPaymentService> = ({
+    item: { icon, id, name },
   }) => {
     return (
       <ListItem
-        content={serviceName}
-        leftSection={<ListItemImage source={serviceIcon} />}
-        onPress={() => openCreate(serviceId, serviceName)}
+        content={name}
+        leftSection={<ListItemImage source={icon} />}
+        onPress={() => openCreate(id)}
         hasLine
       />
     )
   }
 
   if (isLoading) {
-    return <ActivityIndicator />
+    return (
+      <Wrapper>
+        <ActivityIndicator />
+      </Wrapper>
+    )
   }
 
   return (
@@ -100,6 +105,6 @@ export const PaymentServices = ({
   )
 }
 
-const keyExtractor = (item: TServiceItem) => item.serviceId
+const keyExtractor = (item: TPaymentService) => item.id
 
 const separatorLine = () => <Line marginHorizontal={9} />

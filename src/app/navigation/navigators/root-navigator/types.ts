@@ -1,11 +1,11 @@
 import { HomeTabsParamsList } from '../home-tabs-navigator'
+import { TPaymentService } from '@screens/payment/payment-services/types'
 
 export type RootStackScreenParams = {
   paymentServices: undefined
-  paymentCreate: { serviceId: string; title: string }
+  paymentCreate: TPaymentService
   paymentConfirm: {
-    serviceId: string
-    title: string
+    name: string
     phone: string
     amount: number
   }
