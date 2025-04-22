@@ -1,22 +1,39 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParamsList } from '@routing/app-navigation/types'
 import { Images } from '@shared/ui/images'
-import { useState } from 'react'
 import { useTheme } from '@shared/ui/theme'
 import CurrencyInput from 'react-native-currency-input'
-import { View, Image, FlatList, ListRenderItem, Pressable } from 'react-native'
-import { balance, values } from './constansts'
+import {
+  View,
+  Image,
+  FlatList,
+  ListRenderItem,
+  Pressable,
+  ImageSourcePropType,
+} from 'react-native'
 import { styled } from '@shared/ui/theme'
 import { Input, Line, Typography } from '@shared/ui/atoms'
 import { CardItem } from './molecules/card-item'
 import { PrimaryButton } from '@shared/ui/molecules'
 import { KeyboardView } from '@shared/ui/templates'
-import { services } from '../payment-services/constants'
+import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
+import { values } from './constansts'
 
 export type TPaymentCreateProps = StackScreenProps<
   RootStackParamsList,
   'paymentCreate'
 >
+
+type Props = {
+  handleChangePhone: (v: string) => void
+  handleChangeAmount: (v: number | null) => void
+  continueTransaction: () => void
+  incrementalValue: (v: number) => void
+  balance: string
+  hasDisable: boolean
+  phone: string
+  value: number
+  iamgeSource: ImageSourcePropType
+}
 
 const Wrapper = styled(View)`
   flex: 1;
@@ -59,30 +76,26 @@ const CardItemImage = styled(Image)`
   width: ${({ theme }) => theme.spacing(5)}px;
   height: ${({ theme }) => theme.spacing(3.5)}px;
 `
-const FlatListComponent = styled(FlatList)`
-  padding-top: ${({ theme }) => theme.spacing(1)}px;
-`
-export const PaymentCreate = ({ navigation, route }: TPaymentCreateProps) => {
-  const theme = useTheme()
-  const [phone, setPhone] = useState('')
-  const [value, setValue] = useState(0)
-  const disable = !value || phone.length !== 11
 
-  const continueTransaction = () => {
-    navigation.navigate('paymentConfirm', {
-      amount: value,
-      phone,
-      serviceId: route.params.serviceId,
-      title: route.params.title,
-    })
-  }
+export const PaymentCreate = ({
+  balance,
+  hasDisable,
+  phone,
+  value,
+  iamgeSource,
+  incrementalValue,
+  handleChangeAmount,
+  continueTransaction,
+  handleChangePhone,
+}: Props) => {
+  const theme = useTheme()
 
   const renderItem: ListRenderItem<{ id: string; value: number }> = ({
     item,
   }) => {
     return (
       <PressableWrapper
-        onPress={() => setValue(vl => vl + item.value)}
+        onPress={() => incrementalValue(item.value)}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} // Увеличиваем зону клика
       >
         <PressableTypography variant='caption1'>
@@ -93,23 +106,12 @@ export const PaymentCreate = ({ navigation, route }: TPaymentCreateProps) => {
     )
   }
 
-  const handleChangePhone = (inputText: string) =>
-    setPhone(inputText.slice(0, 11))
-
-  const handleChangeAmount = (inputValue: number | null) =>
-    setValue(inputValue ? inputValue : 0)
-
-  const balance_formatted = balance
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-    .replace('.', ',')
-
   return (
     <Wrapper>
       <ContentWrapper>
         <ContentTitle variant='body15Semibold'>Карта для оплаты</ContentTitle>
         <CardItem
-          description={balance_formatted + ' ₽'}
+          description={balance + ' ₽'}
           title='Карта зарплатная'
           leftSection={<CardItemImage source={Images.bankcard} />}
         />
@@ -126,15 +128,7 @@ export const PaymentCreate = ({ navigation, route }: TPaymentCreateProps) => {
           }}
           placeholder='Номер телефона'
           onChangeText={handleChangePhone} //Не сумел сделать форматирование номера(
-          leftSection={
-            <InputImage
-              source={
-                services.find(
-                  ({ serviceId }) => serviceId === route.params.serviceId,
-                )!.serviceIcon
-              }
-            />
-          }
+          leftSection={<InputImage source={iamgeSource} />}
           value={phone}
           inputMode='tel'
           hasClearButton={Boolean(phone.length)}
@@ -166,7 +160,7 @@ export const PaymentCreate = ({ navigation, route }: TPaymentCreateProps) => {
         клавиатуры */}
         <PrimaryButton
           children='Продолжить'
-          disabled={disable}
+          disabled={hasDisable}
           onPress={continueTransaction}
         />
       </ButtonWrapper>

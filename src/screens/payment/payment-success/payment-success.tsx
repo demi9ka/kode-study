@@ -1,15 +1,13 @@
-import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParamsList } from '@routing/app-navigation/types'
 import { Typography } from '@shared/ui/atoms'
 import { Images } from '@shared/ui/images'
 import { PrimaryButton } from '@shared/ui/molecules'
 import { View, Image } from 'react-native'
 import { styled } from '@shared/ui/theme'
 
-export type PaymentSuccessProps = StackScreenProps<
-  RootStackParamsList,
-  'paymentSuccess'
->
+export type Props = {
+  amount: string
+  backToMenu: VoidFunction
+}
 
 const Wrapper = styled(View)`
   flex: 1;
@@ -33,14 +31,7 @@ const ImageComponent = styled(Image)`
   width: ${({ theme }) => theme.spacing(18.75)}px;
   height: ${({ theme }) => theme.spacing(18.75)}px;
 `
-export const PaymentSuccess = ({ navigation, route }: PaymentSuccessProps) => {
-  const backToMenu = () => {
-    navigation.popToTop()
-  }
-  const amount = new Intl.NumberFormat('ru-RU', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(route.params.amount)
+export const PaymentSuccess = ({ backToMenu, amount }: Props) => {
   return (
     <Wrapper>
       <ContentWrapper>

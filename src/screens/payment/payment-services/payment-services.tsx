@@ -1,5 +1,3 @@
-import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParamsList } from '@routing/app-navigation/types'
 import { KeyboardView } from '@shared/ui/templates'
 import { useTheme } from '@shared/ui/theme'
 import {
@@ -9,21 +7,22 @@ import {
   ListRenderItem,
   RefreshControl,
   ActivityIndicator,
+  ImageSourcePropType,
 } from 'react-native'
-import { services } from './constants'
-import { TServiceItem } from './types'
-import { useState } from 'react'
 import { IconSearch } from '@shared/ui/icons'
 import { ListItem } from '@shared/ui/molecules/list-item'
 import { styled } from '@shared/ui/theme'
 import { Input } from '@shared/ui/atoms'
 import { Line } from '@shared/ui/atoms'
+import { TPaymentService } from './types'
 
-export type PaymentServicesProps = StackScreenProps<
-  RootStackParamsList,
-  'paymentServices'
->
-
+type Props = {
+  services_data: TPaymentService[]
+  search: string
+  setSearch: (v: string) => void
+  openCreate: (id: string) => void
+  isLoading: boolean
+}
 const Wrapper = styled(View)`
   flex: 1;
   background-color: ${({ theme }) => theme.palette.background.secondary};
@@ -38,33 +37,35 @@ const ListItemImage = styled(Image)`
   height: ${({ theme }) => theme.spacing(5)}px;
 `
 
-export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
-  const isLoading = false
-  const [search, setSearch] = useState('')
+export const PaymentServices = ({
+  isLoading,
+  openCreate,
+  search,
+  services_data,
+  setSearch,
+}: Props) => {
   const theme = useTheme()
-  const openCreate = (serviceId: string, title: string) => {
-    navigation.navigate('paymentCreate', { serviceId, title })
-  }
 
-  const renderItem: ListRenderItem<TServiceItem> = ({
-    item: { serviceId, serviceIcon, serviceName },
+  const renderItem: ListRenderItem<TPaymentService> = ({
+    item: { icon, id, name },
   }) => {
     return (
       <ListItem
-        content={serviceName}
-        leftSection={<ListItemImage source={serviceIcon} />}
-        onPress={() => openCreate(serviceId, serviceName)}
+        content={name}
+        leftSection={<ListItemImage source={icon} />}
+        onPress={() => openCreate(id)}
         hasLine
       />
     )
   }
 
   if (isLoading) {
-    return <ActivityIndicator />
+    return (
+      <Wrapper>
+        <ActivityIndicator />
+      </Wrapper>
+    )
   }
-  const services_data = services.filter(({ serviceName }) =>
-    serviceName.toUpperCase().includes(search.toUpperCase()),
-  )
 
   return (
     <KeyboardView>
@@ -104,6 +105,6 @@ export const PaymentServices = ({ navigation }: PaymentServicesProps) => {
   )
 }
 
-const keyExtractor = (item: TServiceItem) => item.serviceId
+const keyExtractor = (item: TPaymentService) => item.id
 
 const separatorLine = () => <Line marginHorizontal={9} />
