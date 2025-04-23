@@ -10,8 +10,9 @@ export type RootStackScreenParams = {
     amount: number
     cashback_percentage: number
   }
-  paymentSuccess: {
+  paymentResult: {
     amount: number
+    result: boolean
   }
   paymentOtp: {
     otpId: string

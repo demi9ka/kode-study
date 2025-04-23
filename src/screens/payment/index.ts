@@ -1,5 +1,5 @@
 export { PaymentConfirmConnector } from './payment-confirm'
 export { PaymentCreateConnector } from './payment-create'
 export { PaymentMainConnector } from './payment-main'
-export { PaymentSuccessConnector } from './payment-success'
+export { PaymentResultConnector } from './payment-result'
 export { PaymentServicesConnector } from './payment-services'

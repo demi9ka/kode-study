@@ -8,9 +8,9 @@ type Props = {
   openLink: () => void
   confirmTransaction: () => void
   mobile_operator: string
-  cashback: string
   phone: string
   amount: number
+  cachBack: number
 }
 
 const Wrapper = styled(View)`
@@ -30,12 +30,12 @@ const Link = styled(Typography)`
 `
 
 export const PaymentConfirm = ({
-  cashback,
   confirmTransaction,
   mobile_operator,
   openLink,
   amount,
   phone,
+  cachBack,
 }: Props) => {
   return (
     <Wrapper>
@@ -44,7 +44,7 @@ export const PaymentConfirm = ({
       <InfoItem title='Мобильный оператор' value={mobile_operator} />
       <InfoItem title='Имя получателя' value='Денис Гладкий' />
       <InfoItem title='Сумма платежа' value={`${amount} ₽`} />
-      <InfoItem title='Кешбек' value={`${cashback} ₽`} />
+      <InfoItem title='Кешбек' value={`${cachBack} ₽`} />
 
       <Footer>
         <PrimaryButton children={'Продолжить'} onPress={confirmTransaction} />
