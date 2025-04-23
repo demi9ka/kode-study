@@ -7,7 +7,6 @@ import {
   ListRenderItem,
   RefreshControl,
   ActivityIndicator,
-  ImageSourcePropType,
 } from 'react-native'
 import { IconSearch } from '@shared/ui/icons'
 import { ListItem } from '@shared/ui/molecules/list-item'
@@ -22,6 +21,7 @@ type Props = {
   setSearch: (v: string) => void
   openCreate: (id: string) => void
   isLoading: boolean
+  onRefresh: VoidFunction
 }
 const Wrapper = styled(View)`
   flex: 1;
@@ -43,6 +43,7 @@ export const PaymentServices = ({
   search,
   services_data,
   setSearch,
+  onRefresh,
 }: Props) => {
   const theme = useTheme()
 
@@ -52,9 +53,8 @@ export const PaymentServices = ({
     return (
       <ListItem
         content={name}
-        leftSection={<ListItemImage source={icon} />}
+        leftSection={<ListItemImage src={icon} />}
         onPress={() => openCreate(id)}
-        hasLine
       />
     )
   }
@@ -74,7 +74,7 @@ export const PaymentServices = ({
           refreshControl={
             <RefreshControl
               refreshing={false}
-              onRefresh={() => {}}
+              onRefresh={onRefresh}
               tintColor='white'
             />
           }

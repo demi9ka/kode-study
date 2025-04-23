@@ -1,9 +1,9 @@
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
 import { StackScreenProps } from '@react-navigation/stack'
 import { PaymentServices } from './payment-services'
-import { useEffect, useState } from 'react'
-import { useGetServices } from './entities/hooks/use-get-services'
-import { TPaymentService } from './types'
+import { useState } from 'react'
+import { usePaymentList } from '@entities/payments/hooks'
+import { getServicesMapper } from './entities/get-services-mapper'
 
 export type PaymentServicesProps = StackScreenProps<
   RootStackParamsList,
@@ -13,43 +13,26 @@ export type PaymentServicesProps = StackScreenProps<
 export const PaymentServicesConnector = ({
   navigation,
 }: PaymentServicesProps) => {
-  const [isLoading, setIsLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [services, setServices] = useState<TPaymentService[] | null>(null)
-  const [services_data, setServicesData] = useState<TPaymentService[] | null>(
-    null,
-  )
+  const { data, isLoading, refetch } = usePaymentList()
 
-  useEffect(() => {
-    const services_responce = useGetServices()
-    services_responce.then(res => {
-      if (!res) return
-      setServices(res)
-      setIsLoading(false)
-    })
-  }, [])
-
-  useEffect(() => {
-    if (!services) return
-    const filter_services = services.filter(({ name }) =>
-      name.toUpperCase().includes(search.toUpperCase()),
-    )
-    setServicesData(filter_services)
-  }, [services, search])
+  const data_mapped = data ? getServicesMapper(data.category[0].services!) : []
 
   const openCreate = (id: string) => {
-    if (!services) return
-    const crnt_service = services.find(
-      ({ id: service_id }) => service_id === id,
-    )!
-    navigation.navigate('paymentCreate', crnt_service)
+    if (!data_mapped.length) return
+    navigation.navigate('paymentCreate', data_mapped.find(el => el.id === id)!)
   }
+
+  const filter_data = data_mapped.filter(({ name }) =>
+    name.toLowerCase().includes(search.toLowerCase()),
+  )
 
   return (
     <PaymentServices
+      onRefresh={refetch}
       search={search}
       setSearch={setSearch}
-      services_data={services_data || []}
+      services_data={filter_data || []}
       openCreate={openCreate}
       isLoading={isLoading}
     />
