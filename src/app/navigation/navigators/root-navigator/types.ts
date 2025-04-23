@@ -1,5 +1,5 @@
-import { HomeTabsParamsList } from '../home-tabs-navigator'
 import { TPaymentService } from '@screens/payment/payment-services/types'
+import { HomeTabsParamsList } from '../home-tabs-navigator'
 
 export type RootStackScreenParams = {
   paymentServices: undefined
@@ -8,9 +8,17 @@ export type RootStackScreenParams = {
     name: string
     phone: string
     amount: number
+    cashback_percentage: number
   }
   paymentSuccess: {
     amount: number
+  }
+  paymentOtp: {
+    otpId: string
+    otpLen: number
+    resendIn: number
+    attemptsLeft: number
+    onConfirm: () => void
   }
 }
 

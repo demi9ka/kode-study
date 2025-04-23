@@ -8,6 +8,7 @@ import {
   PaymentServicesScreen,
   PaymentSuccessScreen,
 } from './screens'
+import { OtpConnector } from '@features/otp'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
@@ -38,6 +39,7 @@ export const RootNavigator = () => {
         component={PaymentConfirmScreen}
         options={{ headerTitle: 'Подтверждение' }}
       />
+      <RootStack.Screen name='paymentOtp' component={OtpConnector} />
       <RootStack.Screen
         name='paymentSuccess'
         component={PaymentSuccessScreen}
