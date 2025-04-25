@@ -4,6 +4,7 @@ import { PaymentServices } from './payment-services'
 import { useState } from 'react'
 import { usePaymentList } from '@entities/payments/hooks'
 import { getServicesMapper } from './entities/get-services-mapper'
+import { addToast } from '@features/toast'
 
 export type PaymentServicesProps = StackScreenProps<
   RootStackParamsList,
@@ -14,7 +15,13 @@ export const PaymentServicesConnector = ({
   navigation,
 }: PaymentServicesProps) => {
   const [search, setSearch] = useState('')
-  const { data, isLoading, refetch } = usePaymentList()
+  const { data, isLoading, refetch, isError, error } = usePaymentList()
+  if (isError) {
+    addToast({
+      message: error.message,
+      variant: 'error',
+    })
+  }
 
   const data_mapped = data ? getServicesMapper(data.category[0].services!) : []
 

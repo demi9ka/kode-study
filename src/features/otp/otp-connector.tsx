@@ -3,6 +3,7 @@ import { OtpScreen } from './ui/otp-screen/otp-screen'
 import { useEffect, useState } from 'react'
 import { useConfirmOtp, useResendOtp } from 'entities/otp/hooks'
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
+import { addToast } from '@features/toast'
 
 type TPaymentProvidersProps = StackScreenProps<
   RootStackParamsList,
@@ -23,6 +24,7 @@ export const OtpConnector = ({ navigation, route }: TPaymentProvidersProps) => {
   const { otpId, otpLen, resendIn, onConfirm, attemptsLeft } = route.params
   const { mutateAsync, data, isPending } = useConfirmOtp()
   const { mutate, data: resendData } = useResendOtp()
+
   const handleConfirm = (otp: string) => {
     if (value.length === otpLen) {
       mutateAsync(

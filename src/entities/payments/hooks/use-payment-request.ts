@@ -1,3 +1,4 @@
+import { addToast } from '@features/toast'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const usePaymentRequest = () => {
@@ -9,6 +10,12 @@ export const usePaymentRequest = () => {
           console.log(res)
           resolve({ result: res > 0.5 }) // Пример: возвращает true/false с шансом 50%
         }, 1000)
+      })
+    },
+    onError: ({ message }) => {
+      addToast({
+        message,
+        variant: 'error',
       })
     },
   })

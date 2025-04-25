@@ -4,6 +4,7 @@ import { Linking } from 'react-native'
 import { PaymentConfirm } from './payment-confirm'
 import { useOtp } from '@entities/otp/hooks'
 import { usePaymentRequest } from '@entities/payments/hooks/use-payment-request'
+import { addToast } from '@features/toast'
 
 type Props = StackScreenProps<RootStackParamsList, 'paymentConfirm'>
 
@@ -15,7 +16,7 @@ export const PaymentConfirmConnector = ({ navigation, route }: Props) => {
     cashback_percentage,
   } = route.params
 
-  const { mutateAsync } = useOtp()
+  const { mutateAsync, isError, error } = useOtp()
   const { mutateAsync: paymentRequestAsync } = usePaymentRequest()
   const confirmTransaction = async () => {
     const {
@@ -23,6 +24,13 @@ export const PaymentConfirmConnector = ({ navigation, route }: Props) => {
     } = await mutateAsync({
       postApiCoreOtpRequest: { operation: 'PAYMENT' },
     })
+    if (isError) {
+      addToast({
+        message: error.message,
+        variant: 'error',
+      })
+    }
+
     const onConfirm = async () => {
       const { result } = await paymentRequestAsync(otpId)
       navigation.navigate('paymentResult', { amount, result })
