@@ -3,8 +3,8 @@ import { StackScreenProps } from '@react-navigation/stack'
 import { PaymentServices } from './payment-services'
 import { useState } from 'react'
 import { usePaymentList } from '@entities/payments/hooks'
-import { getServicesMapper } from './entities/get-services-mapper'
 import { addToast } from '@features/toast'
+import { getServicesMapper } from './mappers/map-services'
 
 export type PaymentServicesProps = StackScreenProps<
   RootStackParamsList,
@@ -23,14 +23,14 @@ export const PaymentServicesConnector = ({
     })
   }
 
-  const data_mapped = data ? getServicesMapper(data.category[0].services!) : []
+  const dataMapped = data ? getServicesMapper(data.category[0].services!) : []
 
   const openCreate = (id: string) => {
-    if (!data_mapped.length) return
-    navigation.navigate('paymentCreate', data_mapped.find(el => el.id === id)!)
+    if (!dataMapped.length) return
+    navigation.navigate('paymentCreate', dataMapped.find(el => el.id === id)!)
   }
 
-  const filter_data = data_mapped.filter(({ name }) =>
+  const filteredData = dataMapped.filter(({ name }) =>
     name.toLowerCase().includes(search.toLowerCase()),
   )
 
@@ -39,7 +39,7 @@ export const PaymentServicesConnector = ({
       onRefresh={refetch}
       search={search}
       setSearch={setSearch}
-      services_data={filter_data || []}
+      services_data={filteredData}
       openCreate={openCreate}
       isLoading={isLoading}
     />

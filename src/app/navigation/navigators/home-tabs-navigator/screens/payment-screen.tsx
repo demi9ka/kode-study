@@ -9,6 +9,8 @@ type Props = CompositeScreenProps<
   StackScreenProps<RootStackParamsList, 'paymentServices'>
 >
 
-export const PaymentScreen = (props: Props) => {
-  return <PaymentMainConnector {...props} />
+export const PaymentScreen = ({ navigation }: Props) => {
+  const handlerPressMobile = () => navigation.navigate('paymentServices')
+
+  return <PaymentMainConnector handlerPressMobile={handlerPressMobile} />
 }

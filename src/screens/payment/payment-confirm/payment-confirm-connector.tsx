@@ -5,17 +5,21 @@ import { PaymentConfirm } from './payment-confirm'
 import { useOtp } from '@entities/otp/hooks'
 import { usePaymentRequest } from '@entities/payments/hooks/use-payment-request'
 import { addToast } from '@features/toast'
+import { goToPaymentOtpType } from '@app/navigation/navigators/root-navigator/screens/payment-confirm-screen'
 
-type Props = StackScreenProps<RootStackParamsList, 'paymentConfirm'>
+type Props = {
+  goToPaymentResult: (result: boolean) => void
+  goToPaymentOtp: (data: goToPaymentOtpType) => void
+} & StackScreenProps<RootStackParamsList, 'paymentConfirm'>['route']['params']
 
-export const PaymentConfirmConnector = ({ navigation, route }: Props) => {
-  const {
-    phone,
-    amount,
-    name: mobile_operator,
-    cashback_percentage,
-  } = route.params
-
+export const PaymentConfirmConnector = ({
+  goToPaymentResult,
+  goToPaymentOtp,
+  amount,
+  cashback_percentage,
+  name,
+  phone,
+}: Props) => {
   const { mutateAsync, isError, error } = useOtp()
   const { mutateAsync: paymentRequestAsync } = usePaymentRequest()
   const confirmTransaction = async () => {
@@ -33,15 +37,15 @@ export const PaymentConfirmConnector = ({ navigation, route }: Props) => {
 
     const onConfirm = async () => {
       const { result } = await paymentRequestAsync(otpId)
-      navigation.navigate('paymentResult', { amount, result })
+      goToPaymentResult(result)
     }
 
-    navigation.navigate('paymentOtp', {
+    goToPaymentOtp({
       attemptsLeft: attemptsLeft!,
+      onConfirm,
       otpId,
       otpLen,
       resendIn,
-      onConfirm,
     })
   }
   const openLink = () => {
@@ -55,7 +59,7 @@ export const PaymentConfirmConnector = ({ navigation, route }: Props) => {
   return (
     <PaymentConfirm
       confirmTransaction={confirmTransaction}
-      mobile_operator={mobile_operator}
+      mobileOperator={name}
       openLink={openLink}
       phone={phone}
       amount={amount}

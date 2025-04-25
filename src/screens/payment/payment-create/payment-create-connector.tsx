@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { balance } from './constansts'
 import { usePaymentService } from '@entities/payments/hooks/use-payment-service'
 import { getMaskedPhone, numberValueFormMoney, moneyString } from './model'
+import { formatBalance } from './helpers'
 
 export type PaymentCreateProps = StackScreenProps<
   RootStackParamsList,
@@ -57,14 +58,11 @@ export const PaymentCreateConnector = ({
 
   //
 
-  const balance_formatted = balance
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-    .replace('.', ',')
+  const balanceFormatted = formatBalance(balance)
 
   return (
     <PaymentCreate
-      balance={balance_formatted}
+      balance={balanceFormatted}
       continueTransaction={continueTransaction}
       handleChangeAmount={handleChangeAmount}
       handleChangePhone={handleChangePhone}
