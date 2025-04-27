@@ -1,13 +1,13 @@
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
 import { StackScreenProps } from '@react-navigation/stack'
-import { PaymentSuccess } from './payment-success'
+import { PaymentResult } from './payment-result'
 
 export type PaymentSuccessProps = StackScreenProps<
   RootStackParamsList,
-  'paymentSuccess'
+  'paymentResult'
 >
 
-export const PaymentSuccessConnector = ({
+export const PaymentResultConnector = ({
   navigation,
   route,
 }: PaymentSuccessProps) => {
@@ -18,5 +18,8 @@ export const PaymentSuccessConnector = ({
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(route.params.amount)
-  return <PaymentSuccess backToMenu={backToMenu} amount={amount} />
+  const { result } = route.params
+  return (
+    <PaymentResult backToMenu={backToMenu} amount={amount} result={result} />
+  )
 }

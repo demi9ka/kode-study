@@ -7,6 +7,7 @@ import { styled } from '@shared/ui/theme'
 export type Props = {
   amount: string
   backToMenu: VoidFunction
+  result: boolean
 }
 
 const Wrapper = styled(View)`
@@ -31,12 +32,16 @@ const ImageComponent = styled(Image)`
   width: ${({ theme }) => theme.spacing(18.75)}px;
   height: ${({ theme }) => theme.spacing(18.75)}px;
 `
-export const PaymentSuccess = ({ backToMenu, amount }: Props) => {
+export const PaymentResult = ({ backToMenu, amount, result }: Props) => {
   return (
     <Wrapper>
       <ContentWrapper>
-        <ImageComponent source={Images.successTransaction} />
-        <Title variant='body17Regular'>Оплачено</Title>
+        <ImageComponent
+          source={result ? Images.successTransaction : Images.errorTransaction}
+        />
+        <Title variant='body17Regular'>
+          {result ? 'Оплачено' : 'Платеж отклонен'}
+        </Title>
         <Typography variant='title'>
           {amount}
           {' ₽'}

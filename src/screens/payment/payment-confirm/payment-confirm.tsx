@@ -7,10 +7,10 @@ import { PrimaryButton } from '@shared/ui/molecules'
 type Props = {
   openLink: () => void
   confirmTransaction: () => void
-  mobile_operator: string
-  cashback: string
+  mobileOperator: string
   phone: string
   amount: number
+  cachBack: number
 }
 
 const Wrapper = styled(View)`
@@ -30,21 +30,21 @@ const Link = styled(Typography)`
 `
 
 export const PaymentConfirm = ({
-  cashback,
   confirmTransaction,
-  mobile_operator,
+  mobileOperator,
   openLink,
   amount,
   phone,
+  cachBack,
 }: Props) => {
   return (
     <Wrapper>
       <InfoItem title='Карта для оплаты' value='Карта для зарплаты' />
       <InfoItem title='Телефон получателя' value={phone} />
-      <InfoItem title='Мобильный оператор' value={mobile_operator} />
+      <InfoItem title='Мобильный оператор' value={mobileOperator} />
       <InfoItem title='Имя получателя' value='Денис Гладкий' />
       <InfoItem title='Сумма платежа' value={`${amount} ₽`} />
-      <InfoItem title='Кешбек' value={`${cashback} ₽`} />
+      <InfoItem title='Кешбек' value={`${cachBack} ₽`} />
 
       <Footer>
         <PrimaryButton children={'Продолжить'} onPress={confirmTransaction} />

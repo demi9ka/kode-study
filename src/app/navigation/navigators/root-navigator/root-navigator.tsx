@@ -5,9 +5,10 @@ import { HomeTabNavigatorConnector } from '../home-tabs-navigator'
 import {
   PaymentConfirmScreen,
   PaymentCreateScreen,
+  PaymentResultScreen,
   PaymentServicesScreen,
-  PaymentSuccessScreen,
 } from './screens'
+import { OtpConnector } from '@features/otp'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
@@ -39,8 +40,13 @@ export const RootNavigator = () => {
         options={{ headerTitle: 'Подтверждение' }}
       />
       <RootStack.Screen
-        name='paymentSuccess'
-        component={PaymentSuccessScreen}
+        name='paymentOtp'
+        component={OtpConnector}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name='paymentResult'
+        component={PaymentResultScreen}
         options={{ headerShown: false }}
       />
     </RootStack.Navigator>

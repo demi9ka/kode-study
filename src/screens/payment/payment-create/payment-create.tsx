@@ -1,14 +1,13 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { Images } from '@shared/ui/images'
 import { useTheme } from '@shared/ui/theme'
-import CurrencyInput from 'react-native-currency-input'
 import {
   View,
   Image,
   FlatList,
   ListRenderItem,
   Pressable,
-  ImageSourcePropType,
+  TextInput,
 } from 'react-native'
 import { styled } from '@shared/ui/theme'
 import { Input, Line, Typography } from '@shared/ui/atoms'
@@ -17,6 +16,7 @@ import { PrimaryButton } from '@shared/ui/molecules'
 import { KeyboardView } from '@shared/ui/templates'
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
 import { values } from './constansts'
+import { moneyString } from './model'
 
 export type TPaymentCreateProps = StackScreenProps<
   RootStackParamsList,
@@ -25,14 +25,13 @@ export type TPaymentCreateProps = StackScreenProps<
 
 type Props = {
   handleChangePhone: (v: string) => void
-  handleChangeAmount: (v: number | null) => void
+  handleChangeAmount: (v: string) => void
   continueTransaction: () => void
-  incrementalValue: (v: number) => void
   balance: string
-  hasDisable: boolean
   phone: string
   value: number
-  iamgeSource: ImageSourcePropType
+  iamgeSource: string
+  cacheBackString: string
 }
 
 const Wrapper = styled(View)`
@@ -47,7 +46,7 @@ const ContentWrapper = styled(View)`
 const ContentTitle = styled(Typography)`
   color: ${({ theme }) => theme.palette.text.tertiary};
 `
-const AmountInput = styled(CurrencyInput)`
+const AmountInput = styled(TextInput)`
   font-weight: 500;
   font-size: ${({ theme }) => theme.spacing(3.5)}px;
   color: ${({ theme }) => theme.palette.text.primary};
@@ -76,14 +75,17 @@ const CardItemImage = styled(Image)`
   width: ${({ theme }) => theme.spacing(5)}px;
   height: ${({ theme }) => theme.spacing(3.5)}px;
 `
+const Cashback = styled(Typography)`
+  padding-top: ${({ theme }) => theme.spacing(2)}px;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`
 
 export const PaymentCreate = ({
   balance,
-  hasDisable,
   phone,
   value,
   iamgeSource,
-  incrementalValue,
+  cacheBackString,
   handleChangeAmount,
   continueTransaction,
   handleChangePhone,
@@ -95,7 +97,7 @@ export const PaymentCreate = ({
   }) => {
     return (
       <PressableWrapper
-        onPress={() => incrementalValue(item.value)}
+        onPress={() => handleChangeAmount(String(item.value))}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} // Увеличиваем зону клика
       >
         <PressableTypography variant='caption1'>
@@ -128,7 +130,7 @@ export const PaymentCreate = ({
           }}
           placeholder='Номер телефона'
           onChangeText={handleChangePhone} //Не сумел сделать форматирование номера(
-          leftSection={<InputImage source={iamgeSource} />}
+          leftSection={<InputImage src={iamgeSource} />}
           value={phone}
           inputMode='tel'
           hasClearButton={Boolean(phone.length)}
@@ -137,32 +139,28 @@ export const PaymentCreate = ({
       <ContentWrapper>
         <ContentTitle variant='body15Semibold'>Сумма</ContentTitle>
         <AmountInput
-          value={value}
-          onChangeValue={handleChangeAmount}
-          keyboardType='numeric'
-          prefix='₽'
-          placeholder='0'
+          onChangeText={handleChangeAmount}
+          value={moneyString(value)}
+          keyboardType='number-pad'
+          placeholder={moneyString(0)}
         />
         <Line />
-
-        <FlatList //TODO
-          horizontal={true}
-          data={values}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          initialNumToRender={5}
-          keyboardShouldPersistTaps='handled'
-        />
+        {cacheBackString.length ? (
+          <Cashback variant='caption1'>{cacheBackString}</Cashback>
+        ) : (
+          <FlatList
+            horizontal={true}
+            data={values}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            initialNumToRender={5}
+            keyboardShouldPersistTaps='handled'
+          />
+        )}
       </ContentWrapper>
 
       <ButtonWrapper>
-        {/* Не смогу прижать кнопку к низу и кусок неё видно при открытии
-        клавиатуры */}
-        <PrimaryButton
-          children='Продолжить'
-          disabled={hasDisable}
-          onPress={continueTransaction}
-        />
+        <PrimaryButton children='Продолжить' onPress={continueTransaction} />
       </ButtonWrapper>
     </Wrapper>
   )
