@@ -5,7 +5,7 @@ import { CommonActions } from '@react-navigation/native'
 
 type Props = StackScreenProps<RootStackParamsList, 'welcome'>
 
-export const welcomeScreen = ({ navigation, route }: Props) => {
+export const WelcomeScreen = ({ navigation, route }: Props) => {
   const goToPhoneNumber = () => {
     navigation.dispatch(
       CommonActions.reset({

@@ -8,20 +8,6 @@ export const usePaymentService = (serviceId: string) => {
         authorization: 'Bearer 123',
         serviceId,
       }),
-    //   new Promise(resolve => {
-    //     setTimeout(
-    //       () =>
-    //         resolve({
-    //           data: {
-    //             service_id: 1,
-    //             cashback_percentage: 1750,
-    //             recipient_mask: '9XX XXX XX XX',
-    //             comment_mask: null,
-    //           },
-    //         }),
-    //       1000,
-    //     )
-    //   }),
     queryKey: ['payment-service'],
   })
 }

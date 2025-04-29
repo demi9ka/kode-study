@@ -9,7 +9,7 @@ import {
   PaymentServicesScreen,
 } from './screens'
 import { OtpConnector } from '@features/otp'
-import { welcomeScreen } from './screens/welcome-screen'
+import { WelcomeScreen } from './screens/welcome-screen'
 import { AuthPhoneScreen } from './screens/auth-phone-screen'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
@@ -21,7 +21,7 @@ export const RootNavigator = () => {
       screenOptions={rootStackOptions}>
       <RootStack.Screen
         name='welcome'
-        component={welcomeScreen}
+        component={WelcomeScreen}
         options={{ headerShown: false }}
       />
       <RootStack.Screen

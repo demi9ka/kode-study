@@ -14,7 +14,7 @@ const Wrapper = styled(View)`
   z-index: 10;
   gap: ${({ theme }) => theme.spacing(1)}px;
   top: ${({ theme }) => theme.spacing(1)}px;
-  left: ${({ theme }) => theme.spacing(1)}%;
+  left: ${({ theme }) => theme.spacing(5 / 8)}%;
   width: 100%;
 `
 const Text = styled(Typography)`
@@ -24,11 +24,12 @@ const ToastComponent = styled.View<{
   $variant: ToastVariant
 }>`
   flex-direction: row;
+  align-items: center;
   background-color: ${({ theme, $variant }) =>
     theme.palette.indicator[$variant]};
   padding: ${({ theme }) => theme.spacing(2)}px;
   border-radius: ${({ theme }) => theme.spacing(2)}px;
-  width: 84%;
+  width: 90%;
 `
 
 export const Toasts = ({ removeToasts, toasts }: ToastsProps) => {

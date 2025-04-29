@@ -1,9 +1,10 @@
 import React, {
   TextInput,
   TextInputProps,
-  ViewProps,
   TouchableOpacity,
   View,
+  StyleProp,
+  ViewStyle,
 } from 'react-native'
 import { useTheme, styled } from '@shared/ui/theme'
 import { IconClose } from '@shared/ui/icons'
@@ -12,9 +13,8 @@ import { forwardRef, ReactNode } from 'react'
 const Wrapper = styled(View)`
   flex-direction: row;
   padding: ${({ theme }) => theme.spacing(3 / 4)}px
-    ${({ theme }) => theme.spacing(1)}px
-    ${({ theme }) => theme.spacing(3 / 4)}px
-    ${({ theme }) => theme.spacing(1)}px;
+    ${({ theme }) => theme.spacing(2)}px;
+
   align-items: center;
   background-color: ${({ theme }) => theme.palette.content.secondary};
   border-radius: ${({ theme }) => theme.spacing(1)}px;
@@ -36,7 +36,8 @@ export type Props = {
   hasClearButton?: boolean
   isError: boolean
   leftSection?: ReactNode
-  wrapperStyle?: ViewProps['style']
+  rigthSection?: ReactNode
+  wrapperStyle?: StyleProp<ViewStyle>
   onChange?: TextInputProps['onChangeText']
   onNativeChange?: TextInputProps['onChange']
 } & Omit<TextInputProps, 'onChange' | 'onChangeText'>
@@ -47,6 +48,7 @@ export const Input = forwardRef<TextInput, Props>(
       isError,
       hasClearButton,
       leftSection,
+      rigthSection,
       wrapperStyle,
       onNativeChange,
       onChange,
@@ -59,7 +61,6 @@ export const Input = forwardRef<TextInput, Props>(
     return (
       <Wrapper style={wrapperStyle}>
         {leftSection}
-
         <InputNode
           ref={ref}
           onChangeText={onChange}
@@ -75,8 +76,8 @@ export const Input = forwardRef<TextInput, Props>(
           }
           {...props}
         />
-
-        {hasClearButton ? (
+        {rigthSection ? rigthSection : ''}
+        {hasClearButton && !rigthSection ? (
           <TouchableOpacity onPress={handleOnPress}>
             <IconClose color={theme.palette.content.tertiary} />
           </TouchableOpacity>

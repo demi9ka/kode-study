@@ -1,6 +1,5 @@
 import { Images } from '@shared/ui/images'
 import { styled } from '@shared/ui/theme'
-import { Image } from 'react-native'
 
 const Wrapper = styled.View`
   flex-grow: 1;

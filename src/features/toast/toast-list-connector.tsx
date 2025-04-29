@@ -4,7 +4,7 @@ import { Toasts } from './toast-list'
 
 export const ToastsListConnector = () => {
   const toasts = useUnit(toastModel.$toasts)
-  const removeToast = (id: string) => toastModel.removeToast(id)
+  const removeToast = (id: number) => toastModel.removeToast(id)
 
   return <Toasts toasts={toasts} removeToasts={removeToast} />
 }
