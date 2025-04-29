@@ -9,16 +9,21 @@ import {
   PaymentServicesScreen,
 } from './screens'
 import { OtpConnector } from '@features/otp'
+import { welcomeScreen } from './screens/welcome-screen'
+import { AuthPhoneScreen } from './screens/auth-phone-screen'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
 export const RootNavigator = () => {
-  const isAuth = true
-
   return (
     <RootStack.Navigator
-      initialRouteName='HomeTabs'
+      initialRouteName='welcome'
       screenOptions={rootStackOptions}>
+      <RootStack.Screen
+        name='welcome'
+        component={welcomeScreen}
+        options={{ headerShown: false }}
+      />
       <RootStack.Screen
         name='HomeTabs'
         component={HomeTabNavigatorConnector}
@@ -47,6 +52,11 @@ export const RootNavigator = () => {
       <RootStack.Screen
         name='paymentResult'
         component={PaymentResultScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name='authPhone'
+        component={AuthPhoneScreen}
         options={{ headerShown: false }}
       />
     </RootStack.Navigator>

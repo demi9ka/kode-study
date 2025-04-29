@@ -1,7 +1,9 @@
 import { TPaymentService } from '@screens/payment/payment-services/types'
 import { HomeTabsParamsList } from '../home-tabs-navigator'
+import { ReactNode } from 'react'
 
 export type RootStackScreenParams = {
+  welcome: undefined
   paymentServices: undefined
   paymentCreate: TPaymentService
   paymentConfirm: {
@@ -21,6 +23,10 @@ export type RootStackScreenParams = {
     attemptsLeft: number
     onConfirm: () => void
   }
+  authPassword: {
+    create: boolean
+  }
+  authPhone: undefined
 }
 
 export type RootStackParamsList = {
