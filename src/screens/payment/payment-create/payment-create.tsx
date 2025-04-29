@@ -16,7 +16,8 @@ import { PrimaryButton } from '@shared/ui/molecules'
 import { KeyboardView } from '@shared/ui/templates'
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
 import { values } from './constansts'
-import { moneyString } from './model'
+import { moneyString, TPaymentCreateForm } from './model'
+import { Control, Controller } from 'react-hook-form'
 
 export type TPaymentCreateProps = StackScreenProps<
   RootStackParamsList,
@@ -24,14 +25,12 @@ export type TPaymentCreateProps = StackScreenProps<
 >
 
 type Props = {
-  handleChangePhone: (v: string) => void
-  handleChangeAmount: (v: string) => void
-  continueTransaction: () => void
-  balance: string
-  phone: string
-  value: number
   iamgeSource: string
+  control: Control<TPaymentCreateForm, any, TPaymentCreateForm>
+  moneyOnCard: string
   cacheBackString: string
+  onChipPress: (value: number) => void
+  handleSubmit: VoidFunction
 }
 
 const Wrapper = styled(View)`
@@ -46,10 +45,12 @@ const ContentWrapper = styled(View)`
 const ContentTitle = styled(Typography)`
   color: ${({ theme }) => theme.palette.text.tertiary};
 `
-const AmountInput = styled(TextInput)`
+const AmountInput = styled(TextInput)<{
+  $textColor: string
+}>`
   font-weight: 500;
   font-size: ${({ theme }) => theme.spacing(3.5)}px;
-  color: ${({ theme }) => theme.palette.text.primary};
+  color: ${({ $textColor }) => $textColor};
 `
 const ButtonWrapper = styled(View)`
   flex-grow: 2;
@@ -81,14 +82,12 @@ const Cashback = styled(Typography)`
 `
 
 export const PaymentCreate = ({
-  balance,
-  phone,
-  value,
   iamgeSource,
   cacheBackString,
-  handleChangeAmount,
-  continueTransaction,
-  handleChangePhone,
+  control,
+  handleSubmit,
+  moneyOnCard,
+  onChipPress,
 }: Props) => {
   const theme = useTheme()
 
@@ -97,7 +96,7 @@ export const PaymentCreate = ({
   }) => {
     return (
       <PressableWrapper
-        onPress={() => handleChangeAmount(String(item.value))}
+        onPress={() => onChipPress(item.value)}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} // Увеличиваем зону клика
       >
         <PressableTypography variant='caption1'>
@@ -113,37 +112,65 @@ export const PaymentCreate = ({
       <ContentWrapper>
         <ContentTitle variant='body15Semibold'>Карта для оплаты</ContentTitle>
         <CardItem
-          description={balance + ' ₽'}
+          description={moneyOnCard + ' ₽'}
           title='Карта зарплатная'
           leftSection={<CardItemImage source={Images.bankcard} />}
         />
       </ContentWrapper>
       <ContentWrapper>
-        <Input
-          wrapperStyle={{
-            backgroundColor: theme.palette.content.primary,
-            borderRadius: 26,
-            paddingVertical: theme.spacing(1.75),
-            paddingLeft: theme.spacing(3),
-            gap: theme.spacing(1),
-            paddingRight: theme.spacing(2),
+        <Controller
+          control={control}
+          name='phone'
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                wrapperStyle={{
+                  backgroundColor: theme.palette.content.primary,
+                  borderRadius: 26,
+                  paddingVertical: theme.spacing(1.75),
+                  paddingLeft: theme.spacing(3),
+                  gap: theme.spacing(1),
+                  paddingRight: theme.spacing(2),
+                }}
+                placeholder='Номер телефона'
+                leftSection={<InputImage src={iamgeSource} />}
+                inputMode='tel'
+                hasClearButton={Boolean(field.value.length)}
+                isError={Boolean(fieldState.error?.message?.length)}
+                {...field}
+              />
+            )
           }}
-          placeholder='Номер телефона'
-          onChangeText={handleChangePhone} //Не сумел сделать форматирование номера(
-          leftSection={<InputImage src={iamgeSource} />}
-          value={phone}
-          inputMode='tel'
-          hasClearButton={Boolean(phone.length)}
         />
       </ContentWrapper>
       <ContentWrapper>
         <ContentTitle variant='body15Semibold'>Сумма</ContentTitle>
-        <AmountInput
-          onChangeText={handleChangeAmount}
-          value={moneyString(value)}
-          keyboardType='number-pad'
-          placeholder={moneyString(0)}
+        <Controller
+          control={control}
+          name='money'
+          render={({ field, fieldState }) => {
+            const isError = Boolean(fieldState.error?.message?.length)
+            return (
+              <AmountInput
+                placeholderTextColor={
+                  Boolean(isError)
+                    ? theme.palette.indicator.error
+                    : theme.palette.text.tertiary
+                }
+                $textColor={
+                  Boolean(isError)
+                    ? theme.palette.indicator.error
+                    : theme.palette.text.primary
+                }
+                keyboardType='number-pad'
+                onChangeText={field.onChange}
+                placeholder={moneyString(0)}
+                value={field.value}
+              />
+            )
+          }}
         />
+
         <Line />
         {cacheBackString.length ? (
           <Cashback variant='caption1'>{cacheBackString}</Cashback>
@@ -160,7 +187,7 @@ export const PaymentCreate = ({
       </ContentWrapper>
 
       <ButtonWrapper>
-        <PrimaryButton children='Продолжить' onPress={continueTransaction} />
+        <PrimaryButton children='Продолжить' onPress={handleSubmit} />
       </ButtonWrapper>
     </Wrapper>
   )
