@@ -1,17 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { OtpField } from './otp-field';
+import type { Meta, StoryObj } from '@storybook/react'
+import { OtpField } from './otp-field'
+
+const onChange = (value: string) => console.log(value)
 
 const meta: Meta<typeof OtpField> = {
   title: 'features/otp/otp-field',
   component: OtpField,
   args: {
     value: '',
-    onChange: (value: string) => console.log(value),
+    onChange,
   },
-};
+}
 
-export default meta;
+export default meta
 
-type OtpFieldStory = StoryObj<typeof OtpField>;
+type OtpFieldStory = StoryObj<typeof OtpField>
 
-export const Default: OtpFieldStory = {};
+export const Default: OtpFieldStory = {}

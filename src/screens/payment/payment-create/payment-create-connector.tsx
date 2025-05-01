@@ -6,11 +6,11 @@ import { usePaymentService } from '@entities/payments/hooks/use-payment-service'
 import {
   getMaskedPhone,
   numberValueFormMoney,
-  moneyString,
+  formattedMoneyToString,
   TPaymentCreateForm,
   moneyOnCard,
   getSchema,
-  onlyDigitsValue,
+  getOnlyDigitsValue,
 } from './model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formatBalance } from './helpers'
@@ -39,7 +39,7 @@ export const PaymentCreateConnector = ({
     defaultValues: {
       moneyOnCard,
       phone: '',
-      money: moneyString(0),
+      money: formattedMoneyToString(0),
     },
     resolver: zodResolver(getSchema()),
   })
@@ -48,21 +48,6 @@ export const PaymentCreateConnector = ({
 
   const moneyValue = watch('money')
   const phoneValue = watch('phone')
-
-  //   const handleChangePhone = (inputText: string) =>
-  //     setPhone(
-  //       getMaskedPhone({
-  //         phone: inputText,
-  //         pattern: recipient_mask
-  //           ? '+7 ' + recipient_mask.replaceAll('X', '9')
-  //           : undefined,
-  //       }),
-  //     )
-
-  //   const handleChangeAmount = (inputValue: string) => {
-  //     const numberValue = numberValueFormMoney(inputValue)
-  //     setAmount(numberValue)
-  //   }
 
   const onValid = ({ money, phone }: TPaymentCreateForm) => {
     navigation.navigate('paymentConfirm', {
@@ -89,7 +74,7 @@ export const PaymentCreateConnector = ({
     }
   }
   const onChipPress = (value: number) => {
-    setValue('money', moneyString(value))
+    setValue('money', formattedMoneyToString(value))
   }
 
   useEffect(() => {
@@ -99,14 +84,14 @@ export const PaymentCreateConnector = ({
 
   useEffect(() => {
     const numberValue = numberValueFormMoney(moneyValue)
-    const stringValue = moneyString(numberValue)
+    const stringValue = formattedMoneyToString(numberValue)
     setValue('money', stringValue)
   }, [moneyValue])
 
   const currentMoneyValue = numberValueFormMoney(String(moneyValue))
   const cacheBackString =
     currentMoneyValue > 0 && cashback_percentage
-      ? `Ваш кешбек составит ${cashback_percentage / 100}% - ${moneyString(
+      ? `Ваш кешбек составит ${cashback_percentage / 100}% - ${formattedMoneyToString(
           currentMoneyValue * (cashback_percentage / 10000),
         )}`
       : ''

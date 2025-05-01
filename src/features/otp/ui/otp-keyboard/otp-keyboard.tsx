@@ -2,6 +2,7 @@ import { Typography } from '@shared/ui/atoms'
 import { IconDelete } from '@shared/ui/icons'
 import { styled, useTheme } from '@shared/ui/theme'
 import { TouchableOpacity, View } from 'react-native'
+import { keyboardButton } from './constants'
 
 export type OtpKeyboardProps = {
   onPressNumber: (v: string) => void
@@ -27,39 +28,15 @@ export const OtpKeyboard = ({
   return (
     <Wrapper>
       <Keyboard>
-        <Row>
-          <Button onPress={() => onPressNumber('1')}>
-            <ButtonText>1</ButtonText>
-          </Button>
-          <Button onPress={() => onPressNumber('2')}>
-            <ButtonText>2</ButtonText>
-          </Button>
-          <Button onPress={() => onPressNumber('3')}>
-            <ButtonText>3</ButtonText>
-          </Button>
-        </Row>
-        <Row>
-          <Button onPress={() => onPressNumber('4')}>
-            <ButtonText>4</ButtonText>
-          </Button>
-          <Button onPress={() => onPressNumber('5')}>
-            <ButtonText>5</ButtonText>
-          </Button>
-          <Button onPress={() => onPressNumber('6')}>
-            <ButtonText>6</ButtonText>
-          </Button>
-        </Row>
-        <Row>
-          <Button onPress={() => onPressNumber('7')}>
-            <ButtonText>7</ButtonText>
-          </Button>
-          <Button onPress={() => onPressNumber('8')}>
-            <ButtonText>8</ButtonText>
-          </Button>
-          <Button onPress={() => onPressNumber('9')}>
-            <ButtonText>9</ButtonText>
-          </Button>
-        </Row>
+        {keyboardButton.map(row => (
+          <Row>
+            {row.map(number => (
+              <Button onPress={() => onPressNumber(String(number))}>
+                <ButtonText>{number}</ButtonText>
+              </Button>
+            ))}
+          </Row>
+        ))}
         <Row>
           <Button disabled={!canResend} onPress={onResend}>
             <ResendText variant='caption1' align='center'>

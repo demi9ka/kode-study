@@ -3,15 +3,18 @@ import { useConfirmOtp, useOtp } from 'entities/otp/hooks'
 import { Otp } from './otp'
 import { Alert } from 'react-native'
 
-export type OtpConnectorProps = {
+export type OtpProps = {
   otpId: string
   otpLen: number
   resendIn: number
   attempts: number
   onConfirm: (questToken: string) => void
   phone: string
-  goToTop: VoidFunction
 }
+
+export type OtpConnectorProps = {
+  goToTop: VoidFunction
+} & OtpProps
 
 export const OtpConnector = ({
   onConfirm,
@@ -70,9 +73,9 @@ export const OtpConnector = ({
     )
   }
 
-  const onPressNumber = (nm: string) => {
+  const onPressNumber = (number: string) => {
     if (isPending) return
-    setValue(prev_v => (prev_v + nm).slice(0, otpLen))
+    setValue(prev => (prev + number).slice(0, otpLen))
   }
 
   const onPressRemove = () => {

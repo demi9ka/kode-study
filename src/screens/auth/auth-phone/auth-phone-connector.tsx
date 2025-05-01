@@ -5,10 +5,10 @@ import { AuthPhone } from './auth-phone'
 import { TAuthPostOtpCode, getMaskedPhone, getSchema } from './model'
 import { useEffect } from 'react'
 import { useOtpCode } from './hooks/use-otp-code'
-import { OtpConnectorProps } from '@features/otp/otp-connector'
+import { OtpProps } from '@features/otp/otp-connector'
 
 type AuthPhoneConnectorType = {
-  goToOtp: (props: Omit<OtpConnectorProps, 'goToTop'>) => void
+  goToOtp: (props: OtpProps) => void
 }
 
 export const AuthPhoneConnector = ({ goToOtp }: AuthPhoneConnectorType) => {

@@ -1,5 +1,5 @@
 import { addToast } from '@features/toast'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 
 export const usePaymentRequest = () => {
   return useMutation({
@@ -7,7 +7,7 @@ export const usePaymentRequest = () => {
       return new Promise<{ result: boolean }>(resolve => {
         setTimeout(() => {
           const res = Math.random()
-          resolve({ result: res > 0.5 }) // Пример: возвращает true/false с шансом 50%
+          resolve({ result: res > 0.5 })
         }, 1000)
       })
     },

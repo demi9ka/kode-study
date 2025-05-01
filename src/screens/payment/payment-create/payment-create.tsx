@@ -16,7 +16,7 @@ import { PrimaryButton } from '@shared/ui/molecules'
 import { KeyboardView } from '@shared/ui/templates'
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
 import { values } from './constansts'
-import { moneyString, TPaymentCreateForm } from './model'
+import { formattedMoneyToString, TPaymentCreateForm } from './model'
 import { Control, Controller } from 'react-hook-form'
 
 export type TPaymentCreateProps = StackScreenProps<
@@ -97,8 +97,7 @@ export const PaymentCreate = ({
     return (
       <PressableWrapper
         onPress={() => onChipPress(item.value)}
-        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} // Увеличиваем зону клика
-      >
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
         <PressableTypography variant='caption1'>
           {item.value}
           {' ₽'}
@@ -164,7 +163,7 @@ export const PaymentCreate = ({
                 }
                 keyboardType='number-pad'
                 onChangeText={field.onChange}
-                placeholder={moneyString(0)}
+                placeholder={formattedMoneyToString(0)}
                 value={field.value}
               />
             )

@@ -1,8 +1,8 @@
 import z from 'zod'
 import {
   numberValueFormMoney,
-  onlyDigitsValue,
-  onlyDigitsValueLength,
+  getOnlyDigitsValue,
+  getOnlyDigitsValueLength,
 } from './helpers'
 
 export const getSchema = () => {
@@ -13,8 +13,8 @@ export const getSchema = () => {
         .string()
         .refine(
           value =>
-            onlyDigitsValueLength(value)
-              ? onlyDigitsValueLength(value) === 11
+            getOnlyDigitsValueLength(value)
+              ? getOnlyDigitsValueLength(value) === 11
               : true,
           'Неправильно введен номер телефона',
         ),
@@ -25,7 +25,7 @@ export const getSchema = () => {
       path: ['money'],
     })
     .superRefine((values, ctx) => {
-      const phoneValue = onlyDigitsValue(values.phone)
+      const phoneValue = getOnlyDigitsValue(values.phone)
       if (!phoneValue.length) {
         ctx.addIssue({
           code: 'custom',

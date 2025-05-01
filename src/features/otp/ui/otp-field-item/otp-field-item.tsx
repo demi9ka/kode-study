@@ -13,6 +13,7 @@ export const OtpFieldItem = ({
   return (
     <Wrapper>
       <Text
+        variant='subtitle'
         $color={
           hasError ? theme.palette.indicator.error : theme.palette.text.primary
         }>
@@ -25,7 +26,6 @@ const Text = styled(Typography)<{
   $color: string
 }>`
   color: ${({ $color }) => $color};
-  font-size: 25px;
 `
 
 const Wrapper = styled(View)`

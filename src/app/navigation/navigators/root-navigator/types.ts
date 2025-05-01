@@ -1,6 +1,6 @@
 import { TPaymentService } from '@screens/payment/payment-services/types'
 import { HomeTabsParamsList } from '../home-tabs-navigator'
-import { OtpConnectorProps } from '@features/otp/otp-connector'
+import { OtpProps } from '@features/otp/otp-connector'
 
 export type RootStackScreenParams = {
   welcome: undefined
@@ -10,13 +10,13 @@ export type RootStackScreenParams = {
     name: string
     phone: string
     amount: number
-    cashback_percentage: number
+    cashbackPercentage: number
   }
   paymentResult: {
     amount: number
     result: boolean
   }
-  otp: Omit<OtpConnectorProps, 'goToTop'>
+  otp: OtpProps
   authPassword: {
     create: boolean
   }

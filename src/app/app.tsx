@@ -6,6 +6,7 @@ import { NavigationConnector } from './navigation'
 import { Toasts } from '@features/toast/toast-list'
 import { useUnit } from 'effector-react'
 import { $toasts, removeToast } from '@features/toast/model'
+import { ToastsListConnector } from '@features/toast'
 
 export const App = () => {
   const [isStorybookVisible, setIsStorybookVisible] = useState(true)
@@ -26,7 +27,7 @@ export const App = () => {
 
   return (
     <Providers>
-      <Toasts toasts={toasts} removeToasts={removeToast} />
+      <ToastsListConnector />
       <NavigationConnector />
     </Providers>
   )
