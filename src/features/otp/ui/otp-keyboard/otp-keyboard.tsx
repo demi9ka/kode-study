@@ -8,6 +8,7 @@ export type OtpKeyboardProps = {
   onPressRemove: VoidFunction
   onResend: VoidFunction
   resendIn: number
+  canResend: boolean
 }
 
 export const OtpKeyboard = ({
@@ -15,8 +16,14 @@ export const OtpKeyboard = ({
   onPressRemove,
   onResend,
   resendIn,
+  canResend,
 }: OtpKeyboardProps) => {
   const theme = useTheme()
+
+  const resendButtonText = canResend
+    ? 'Повторить'
+    : `Повторить\nчерез ${resendIn} сек.`
+
   return (
     <Wrapper>
       <Keyboard>
@@ -54,9 +61,9 @@ export const OtpKeyboard = ({
           </Button>
         </Row>
         <Row>
-          <Button onPress={onResend}>
+          <Button disabled={!canResend} onPress={onResend}>
             <ResendText variant='caption1' align='center'>
-              Повторить{'\n'}через {resendIn}
+              {resendButtonText}
             </ResendText>
           </Button>
           <Button onPress={() => onPressNumber('0')}>

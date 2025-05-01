@@ -1,29 +1,22 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator/types'
 import { PaymentConfirmConnector } from '@screens/payment/payment-confirm'
+import { OtpConnectorProps } from '@features/otp/otp-connector'
 
 type Props = StackScreenProps<RootStackParamsList, 'paymentConfirm'>
-
-export type goToPaymentOtpType = {
-  attemptsLeft: number
-  otpId: string
-  otpLen: number
-  resendIn: number
-  onConfirm: () => void
-}
 
 export const PaymentConfirmScreen = ({ navigation, route }: Props) => {
   const { phone, amount, name, cashback_percentage } = route.params
   const goToPaymentResult: (result: boolean) => void = result =>
     navigation.navigate('paymentResult', { amount, result })
 
-  const goToPaymentOtp = (data: goToPaymentOtpType) => {
-    navigation.navigate('paymentOtp', { ...data })
+  const goToOtp = (data: OtpConnectorProps) => {
+    navigation.navigate('otp', data)
   }
   return (
     <PaymentConfirmConnector
       goToPaymentResult={goToPaymentResult}
-      goToPaymentOtp={goToPaymentOtp}
+      goToOtp={goToOtp}
       amount={amount}
       cashback_percentage={cashback_percentage}
       name={name}

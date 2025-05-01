@@ -1,8 +1,7 @@
 import { addToast } from '@features/toast'
+import { DefaultApiPostApiCoreOtpResendRequest } from '@shared/api/core-axios-client'
 import { useMutation } from '@tanstack/react-query'
-
 import { coreApi } from 'shared/api'
-import { DefaultApiPostApiCoreOtpResendRequest } from 'shared/api/core-axios-client'
 
 export const useResendOtp = () => {
   return useMutation({

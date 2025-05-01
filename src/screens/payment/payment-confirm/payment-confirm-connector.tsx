@@ -5,31 +5,28 @@ import { PaymentConfirm } from './payment-confirm'
 import { useOtp } from '@entities/otp/hooks'
 import { usePaymentRequest } from '@entities/payments/hooks/use-payment-request'
 import { addToast } from '@features/toast'
-import { goToPaymentOtpType } from '@app/navigation/navigators/root-navigator/screens/payment-confirm-screen'
+import { OtpConnectorProps } from '@features/otp/otp-connector'
 
 type Props = {
   goToPaymentResult: (result: boolean) => void
-  goToPaymentOtp: (data: goToPaymentOtpType) => void
+  goToOtp: (data: OtpConnectorProps) => void
 } & StackScreenProps<RootStackParamsList, 'paymentConfirm'>['route']['params']
 
 export const PaymentConfirmConnector = ({
   goToPaymentResult,
-  goToPaymentOtp,
+  goToOtp,
   amount,
   cashback_percentage,
   name,
   phone,
 }: Props) => {
-  const { mutateAsync, isError, error } = useOtp()
+  const { mutateAsync: useOtpMuatate, isError, error } = useOtp()
   const { mutateAsync: paymentRequestAsync } = usePaymentRequest()
+
   const confirmTransaction = async () => {
-    const {
-      data: { otpId, otpLen, resendIn, attemptsLeft },
-    } = await mutateAsync({
-      postApiCoreOtpRequest: { operation: 'PAYMENT' },
-    })
+    const { otpId, otpLen } = await useOtpMuatate(phone)
     if (isError) {
-      addToast({
+      return addToast({
         message: error.message,
         variant: 'error',
       })
@@ -40,12 +37,13 @@ export const PaymentConfirmConnector = ({
       goToPaymentResult(result)
     }
 
-    goToPaymentOtp({
-      attemptsLeft: attemptsLeft!,
+    goToOtp({
+      attempts: 5,
       onConfirm,
       otpId,
       otpLen,
-      resendIn,
+      resendIn: 60,
+      phone,
     })
   }
   const openLink = () => {

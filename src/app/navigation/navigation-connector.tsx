@@ -1,12 +1,10 @@
-import {
-    NavigationContainer
-} from '@react-navigation/native'
-import {RootNavigatorConnector} from '@app/navigation/navigators/root-navigator/root-navigator-connector'
+import { NavigationContainer } from '@react-navigation/native'
+import { RootNavigatorConnector } from '@app/navigation/navigators/root-navigator/root-navigator-connector'
 
 export const NavigationConnector = () => {
-    return (
-        <NavigationContainer>
-            <RootNavigatorConnector />
-        </NavigationContainer>
-    )
+  return (
+    <NavigationContainer>
+      <RootNavigatorConnector />
+    </NavigationContainer>
+  )
 }

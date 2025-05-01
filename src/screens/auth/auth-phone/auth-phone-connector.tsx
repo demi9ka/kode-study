@@ -5,10 +5,13 @@ import { AuthPhone } from './auth-phone'
 import { TAuthPostOtpCode, getMaskedPhone, getSchema } from './model'
 import { useEffect } from 'react'
 import { useOtpCode } from './hooks/use-otp-code'
+import { OtpConnectorProps } from '@features/otp/otp-connector'
 
-type AuthPhoneConnectorType = {}
+type AuthPhoneConnectorType = {
+  goToOtp: (props: Omit<OtpConnectorProps, 'goToTop'>) => void
+}
 
-export const AuthPhoneConnector = ({}: AuthPhoneConnectorType) => {
+export const AuthPhoneConnector = ({ goToOtp }: AuthPhoneConnectorType) => {
   const { mutateAsync, isPending } = useOtpCode()
   const form = useForm<TAuthPostOtpCode>({
     mode: 'onSubmit',
@@ -23,8 +26,17 @@ export const AuthPhoneConnector = ({}: AuthPhoneConnectorType) => {
   const phoneValue = watch('phone')
 
   const onValid = async ({ phone }: TAuthPostOtpCode) => {
-    const res = await mutateAsync(phone)
-    console.log(res)
+    const { otpId, otpLen } = await mutateAsync(phone)
+    goToOtp({
+      otpId,
+      otpLen,
+      resendIn: 6,
+      attempts: 5,
+      phone,
+      onConfirm: questToken => {
+        console.log(questToken)
+      },
+    })
   }
 
   const onInvalid = (errors?: FieldErrors<TAuthPostOtpCode>) => {

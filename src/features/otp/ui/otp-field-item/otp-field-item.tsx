@@ -1,15 +1,30 @@
 import { Typography } from '@shared/ui/atoms'
-import { styled } from '@shared/ui/theme'
+import { styled, useTheme } from '@shared/ui/theme'
 import { View } from 'react-native'
 
-export const OtpFieldItem = ({ value }: { value: string }) => {
+export const OtpFieldItem = ({
+  value,
+  hasError,
+}: {
+  value: string
+  hasError: boolean
+}) => {
+  const theme = useTheme()
   return (
     <Wrapper>
-      <Text>{value}</Text>
+      <Text
+        $color={
+          hasError ? theme.palette.indicator.error : theme.palette.text.primary
+        }>
+        {value}
+      </Text>
     </Wrapper>
   )
 }
-const Text = styled(Typography)`
+const Text = styled(Typography)<{
+  $color: string
+}>`
+  color: ${({ $color }) => $color};
   font-size: 25px;
 `
 

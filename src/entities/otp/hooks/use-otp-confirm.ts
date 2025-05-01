@@ -1,13 +1,13 @@
 import { addToast } from '@features/toast'
 import { useMutation } from '@tanstack/react-query'
-
-import { coreApi } from 'shared/api'
-import { DefaultApiPostApiCoreOtpConfirmRequest } from 'shared/api/core-axios-client'
+import { authApi } from 'shared/api'
+import { DefaultApiPostApiAuthConfirmRequest } from 'shared/api/auth-axios-client'
 
 export const useConfirmOtp = () => {
   return useMutation({
-    mutationFn: (payload: DefaultApiPostApiCoreOtpConfirmRequest) =>
-      coreApi.postApiCoreOtpConfirm(payload),
+    mutationFn: (payload: DefaultApiPostApiAuthConfirmRequest) => {
+      return authApi.postApiAuthConfirm({ ...payload })
+    },
     onError: ({ message }) => {
       addToast({
         message,

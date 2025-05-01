@@ -1,20 +1,43 @@
 import styled from 'styled-components/native'
 import { OtpFieldItem } from '../otp-field-item/otp-field-item'
-import { View } from 'react-native'
+import { useTheme } from '@shared/ui/theme'
 
 export type OtpFieldProps = {
   value: string
+  otpLen: number
+  hasError: boolean
 }
-export const OtpField = ({ value }: OtpFieldProps) => {
+
+export const OtpField = ({ value, otpLen, hasError }: OtpFieldProps) => {
+  const theme = useTheme()
+
+  const hasLine = otpLen % 2 == 0
+
+  if (hasLine) {
+    const indexList = [...Array(otpLen).keys()]
+    return (
+      <Wrapper>
+        {indexList.slice(0, otpLen / 2).map(i => (
+          <OtpFieldItem hasError={hasError} key={i} value={value[i] || ''} />
+        ))}
+        <Line
+          $bgColor={
+            hasError
+              ? theme.palette.indicator.error
+              : theme.palette.content.tertiary
+          }
+        />
+        {indexList.slice(otpLen / 2).map(i => (
+          <OtpFieldItem hasError={hasError} key={i} value={value[i] || ''} />
+        ))}
+      </Wrapper>
+    )
+  }
   return (
     <Wrapper>
-      <OtpFieldItem value={value.length > 0 ? value[0] : ''} />
-      <OtpFieldItem value={value.length > 1 ? value[1] : ''} />
-      <OtpFieldItem value={value.length > 2 ? value[2] : ''} />
-      <Line />
-      <OtpFieldItem value={value.length > 3 ? value[3] : ''} />
-      <OtpFieldItem value={value.length > 4 ? value[4] : ''} />
-      <OtpFieldItem value={value.length > 5 ? value[5] : ''} />
+      {[...Array(otpLen).keys()].map(i => (
+        <OtpFieldItem hasError={hasError} key={i} value={value[i] || ''} />
+      ))}
     </Wrapper>
   )
 }
@@ -29,26 +52,10 @@ const Wrapper = styled.View`
   align-items: center;
 `
 
-const Line = styled(View)`
-  background-color: ${({ theme }) => theme.palette.content.tertiary};
+const Line = styled.View<{
+  $bgColor: string
+}>`
+  background-color: ${({ $bgColor }) => $bgColor};
   width: 10px;
   height: 2px;
 `
-
-// const InputArea = styled.View`
-/* background-color: ${({ theme }) => theme.palette.content.secondary};
-  border-radius: ${({ theme }) => theme.spacing(1)}px;
-  flex-direction: row;
-  height: ${({ theme }) => theme.spacing(4.5)}px;
-`
-
-const Input = styled.TextInput`
-  align-items: center;
-  color: ${({ theme }) => theme.palette.text.primary};
-  flex: 1;
-  font-family: ${({ theme }) => theme.typography.body15Regular.fontFamily};
-  font-size: ${({ theme }) => theme.typography.body15Regular.size};
-  justify-content: center;
-  letter-spacing: ${({ theme }) =>
-    theme.typography.body15Regular.letterSpacing};
-` */

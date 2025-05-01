@@ -1,6 +1,6 @@
 import { TPaymentService } from '@screens/payment/payment-services/types'
 import { HomeTabsParamsList } from '../home-tabs-navigator'
-import { ReactNode } from 'react'
+import { OtpConnectorProps } from '@features/otp/otp-connector'
 
 export type RootStackScreenParams = {
   welcome: undefined
@@ -16,13 +16,7 @@ export type RootStackScreenParams = {
     amount: number
     result: boolean
   }
-  paymentOtp: {
-    otpId: string
-    otpLen: number
-    resendIn: number
-    attemptsLeft: number
-    onConfirm: () => void
-  }
+  otp: Omit<OtpConnectorProps, 'goToTop'>
   authPassword: {
     create: boolean
   }

@@ -1,77 +1,129 @@
-import { StackScreenProps } from '@react-navigation/stack'
-import { OtpScreen } from './ui/otp-screen/otp-screen'
 import { useEffect, useState } from 'react'
-import { useConfirmOtp, useResendOtp } from 'entities/otp/hooks'
-import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
-import { addToast } from '@features/toast'
+import { useConfirmOtp, useOtp } from 'entities/otp/hooks'
+import { Otp } from './otp'
+import { Alert } from 'react-native'
 
-type TPaymentProvidersProps = StackScreenProps<
-  RootStackParamsList,
-  'paymentOtp'
->
+export type OtpConnectorProps = {
+  otpId: string
+  otpLen: number
+  resendIn: number
+  attempts: number
+  onConfirm: (questToken: string) => void
+  phone: string
+  goToTop: VoidFunction
+}
 
-// Делаем фичу переиспользуемой
-// type Props = {
-//   otpId: string;
-//   otpLength: number;
-//   resendIn: number;
-//   onConfirmed: () => void;
-// };
-
-export const OtpConnector = ({ navigation, route }: TPaymentProvidersProps) => {
+export const OtpConnector = ({
+  onConfirm,
+  otpId: defaultOtpId,
+  phone,
+  otpLen,
+  attempts,
+  resendIn: resendInInput,
+  goToTop,
+}: OtpConnectorProps) => {
+  const [otpId, setOtpId] = useState(defaultOtpId)
   const [value, setValue] = useState('')
+  const [resendIn, setResendIn] = useState(resendInInput)
+  const [canResend, setCanResend] = useState(false)
+  const [attemptsLeft, setAttemptsLeft] = useState(attempts)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const { mutateAsync: otpConfirmMutate, isPending } = useConfirmOtp()
+  const { mutateAsync: otpMutate } = useOtp()
 
-  const { otpId, otpLen, resendIn, onConfirm, attemptsLeft } = route.params
-  const { mutateAsync, data, isPending } = useConfirmOtp()
-  const { mutate, data: resendData } = useResendOtp()
+  const handleConfirm = async (otp: string) => {
+    if (value.length !== otpLen) return
 
-  const handleConfirm = (otp: string) => {
-    if (value.length === otpLen) {
-      mutateAsync(
-        {
-          postApiCoreOtpConfirmRequest: {
-            otp,
-            otpId,
-          },
+    otpConfirmMutate(
+      {
+        postApiAuthConfirmRequest: {
+          otpCode: otp,
+          otpId,
+          phone,
         },
-        {
-          onSuccess: () => {
-            onConfirm()
-          },
+      },
+      {
+        onSuccess: e => {
+          onConfirm(e.data.guestToken)
         },
-      )
-    }
+        onError: e => {
+          setAttemptsLeft(prev => prev - 1)
+          if (attemptsLeft == 0) {
+            Alert.alert(
+              `Вы ввели неверно код ${attempts} раз`,
+              'Данная сессия авторизации будет сброшена!',
+              [
+                {
+                  text: 'Выход',
+                  style: 'destructive',
+                  onPress: () => {
+                    goToTop()
+                  },
+                },
+              ],
+            )
+          } else {
+            setErrorMessage(`Неверный код. Осталось попыток: ${attemptsLeft}`)
+          }
+        },
+      },
+    )
   }
 
   const onPressNumber = (nm: string) => {
-    setValue(prev_v => prev_v + nm)
+    if (isPending) return
+    setValue(prev_v => (prev_v + nm).slice(0, otpLen))
   }
+
   const onPressRemove = () => {
+    if (isPending) return
     setValue(prev_v => prev_v.slice(0, -1))
+  }
+
+  const onResend = async () => {
+    const { otpId: newOtpId } = await otpMutate(phone)
+    setOtpId(newOtpId)
+    setResendIn(resendInInput)
+    waitResend()
   }
 
   useEffect(() => {
     handleConfirm(value)
   }, [value])
 
+  useEffect(() => {
+    const interval = waitResend()
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  const waitResend = () => {
+    setCanResend(false)
+    const interval = setInterval(() => {
+      setResendIn(prev => {
+        if (prev <= 0) {
+          clearInterval(interval)
+          setCanResend(true)
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return interval
+  }
   return (
-    <OtpScreen
+    <Otp
+      canResend={canResend}
+      resendIn={resendIn}
+      onResend={onResend}
+      attemptsLeft={attemptsLeft}
       isLoading={isPending}
-      canResend={false}
-      onResend={() => {
-        mutate({
-          postApiCoreOtpResendRequest: {
-            otpId,
-          },
-        })
-      }}
-      resendIn={resendData?.data.resendIn || resendIn || 0}
-      attemptsLeft={
-        resendData?.data.attemptsLeft || data?.data.attemptLeft || 0
-      }
       onPressNumber={onPressNumber}
       onPressRemove={onPressRemove}
       value={value}
+      otpLen={otpLen}
+      errorMessage={errorMessage}
+      hasError={Boolean(errorMessage)}
     />
   )
 }
