@@ -1,6 +1,7 @@
 import { TPaymentService } from '@screens/payment/payment-services/types'
 import { HomeTabsParamsList } from '../home-tabs-navigator'
 import { OtpProps } from '@features/otp/otp-connector'
+import { PinCodeVariantType } from '@features/pin-code/types'
 
 export type RootStackScreenParams = {
   welcome: undefined
@@ -18,9 +19,16 @@ export type RootStackScreenParams = {
   }
   otp: OtpProps
   authPassword: {
-    create: boolean
+    guestToken: string
   }
   authPhone: undefined
+  authSuccess: undefined
+  authSetPinCode: undefined
+  pinCode: {
+    variant: PinCodeVariantType
+    compareValue?: string
+    pinCodeLen: number
+  }
 }
 
 export type RootStackParamsList = {

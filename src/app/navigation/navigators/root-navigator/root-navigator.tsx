@@ -3,21 +3,26 @@ import { RootStackParamsList } from './types'
 import { rootStackOptions } from './config'
 import { HomeTabNavigatorConnector } from '../home-tabs-navigator'
 import {
+  AuthPasswordScreen,
+  AuthPhoneScreen,
+  AuthSetPinCodeScreen,
   OtpScreen,
   PaymentConfirmScreen,
   PaymentCreateScreen,
   PaymentResultScreen,
   PaymentServicesScreen,
+  WelcomeScreen,
 } from './screens'
-import { WelcomeScreen } from './screens/welcome-screen'
-import { AuthPhoneScreen } from './screens/auth-phone-screen'
+import { PinCode } from '@features/pin-code/pin-code'
+import { PinCodeScreen } from './screens/pin-code-screen'
+import { AuthSuccessScreen } from './screens/auth-success-screen'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
 export const RootNavigator = () => {
   return (
     <RootStack.Navigator
-      initialRouteName='HomeTabs'
+      initialRouteName='welcome'
       screenOptions={rootStackOptions}>
       <RootStack.Screen
         name='welcome'
@@ -52,6 +57,26 @@ export const RootNavigator = () => {
       <RootStack.Screen
         name='authPhone'
         component={AuthPhoneScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name='authPassword'
+        component={AuthPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name='authSetPinCode'
+        component={AuthSetPinCodeScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name='pinCode'
+        component={PinCodeScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name='authSuccess'
+        component={AuthSuccessScreen}
         options={{ headerShown: false }}
       />
       <RootStack.Screen

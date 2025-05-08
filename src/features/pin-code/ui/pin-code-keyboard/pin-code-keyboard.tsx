@@ -4,26 +4,16 @@ import { styled, useTheme } from '@shared/ui/theme'
 import { TouchableOpacity, View } from 'react-native'
 import { keyboardButton } from './constants'
 
-export type OtpKeyboardProps = {
+export type PinCodeKeyboardProps = {
   onPressNumber: (v: string) => void
   onPressRemove: VoidFunction
-  onResend: VoidFunction
-  resendIn: number
-  canResend: boolean
 }
 
-export const OtpKeyboard = ({
+export const PinCodeKeyboard = ({
   onPressNumber,
   onPressRemove,
-  onResend,
-  resendIn,
-  canResend,
-}: OtpKeyboardProps) => {
+}: PinCodeKeyboardProps) => {
   const theme = useTheme()
-
-  const resendButtonText = canResend
-    ? 'Повторить'
-    : `Повторить\nчерез ${resendIn} сек.`
 
   return (
     <Wrapper>
@@ -38,11 +28,7 @@ export const OtpKeyboard = ({
           </Row>
         ))}
         <Row>
-          <Button disabled={!canResend} onPress={onResend}>
-            <ResendText variant='caption1' align='center'>
-              {resendButtonText}
-            </ResendText>
-          </Button>
+          <Button />
           <Button onPress={() => onPressNumber('0')}>
             <ButtonText>0</ButtonText>
           </Button>
@@ -54,11 +40,11 @@ export const OtpKeyboard = ({
     </Wrapper>
   )
 }
-const ResendText = styled(Typography)`
-  color: ${({ theme }) => theme.palette.text.secondary};
-`
+
 const Wrapper = styled(View)`
+  background-color: ${({ theme }) => theme.palette.background.secondary};
   flex-direction: row;
+  padding-top: ${({ theme }) => theme.spacing(4)}px;
   justify-content: center;
 `
 const Keyboard = styled(View)`

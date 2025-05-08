@@ -8,7 +8,7 @@ export type OtpProps = {
   otpLen: number
   resendIn: number
   attempts: number
-  onConfirm: (questToken: string) => void
+  onConfirm: (guestToken: string) => void
   phone: string
 }
 

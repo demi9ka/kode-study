@@ -20,7 +20,7 @@ export const HomeTabsNavigator = () => {
     <>
       <StatusBar
         backgroundColor={theme.palette.background.primary}
-        barStyle='light-content'
+        barStyle='dark-content'
       />
       <HomeTabs.Navigator
         initialRouteName='HomeMain'

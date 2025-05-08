@@ -28,7 +28,11 @@ export const OtpField = ({ value, otpLen, hasError }: OtpFieldProps) => {
           }
         />
         {indexList.slice(otpLen / 2).map(i => (
-          <OtpFieldItem hasError={hasError} key={i} value={value[i] || ''} />
+          <OtpFieldItem
+            hasError={hasError}
+            key={`${i}_2`}
+            value={value[i] || ''}
+          />
         ))}
       </Wrapper>
     )

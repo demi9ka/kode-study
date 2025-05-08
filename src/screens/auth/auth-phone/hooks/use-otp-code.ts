@@ -5,9 +5,6 @@ import { useMutation } from '@tanstack/react-query'
 export const useOtpCode = () => {
   return useMutation({
     mutationFn: async (phone: string) => {
-      if (phone == '+7 552 828-28-28') {
-        throw new Error('Такой номер не зарегистрирован или доступ ограничен')
-      }
       return (
         await authApi.postApiAuthOtpCode({
           postApiAuthOtpCodeRequest: {

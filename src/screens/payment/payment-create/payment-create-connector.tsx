@@ -10,7 +10,6 @@ import {
   TPaymentCreateForm,
   moneyOnCard,
   getSchema,
-  getOnlyDigitsValue,
 } from './model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formatBalance } from './helpers'
@@ -54,7 +53,7 @@ export const PaymentCreateConnector = ({
       amount: numberValueFormMoney(money),
       phone,
       name,
-      cashback_percentage: cashback_percentage!,
+      cashbackPercentage: cashback_percentage!,
     })
   }
 

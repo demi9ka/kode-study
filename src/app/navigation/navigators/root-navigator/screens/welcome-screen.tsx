@@ -5,7 +5,7 @@ import { CommonActions } from '@react-navigation/native'
 
 type Props = StackScreenProps<RootStackParamsList, 'welcome'>
 
-export const WelcomeScreen = ({ navigation, route }: Props) => {
+export const WelcomeScreen = ({ navigation }: Props) => {
   const goToPhoneNumber = () => {
     navigation.dispatch(
       CommonActions.reset({
@@ -14,17 +14,21 @@ export const WelcomeScreen = ({ navigation, route }: Props) => {
       }),
     )
   }
-  const goToPassword = () => {
+  const goToPassword = (guestToken: string) => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'authPassword' }],
+        routes: [{ name: 'authPassword', params: { guestToken } }],
       }),
     )
+  }
+  const goToPinCode = (pinCode: string) => {
+    console.log(pinCode)
   }
 
   return (
     <WelcomeConnector
+      goToPinCode={goToPinCode}
       goToPassword={goToPassword}
       goToPhoneNumber={goToPhoneNumber}
     />

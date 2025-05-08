@@ -14,4 +14,6 @@ export const Images: Record<string, ImageSourcePropType> = {
   successTransaction: require('./success.png'),
   errorTransaction: require('./error.png'),
   logo: require('./logo.png'),
+  authPinCode: require('./auth-pin-code.png'),
+  authSuccess: require('./auth-success.png'),
 }
