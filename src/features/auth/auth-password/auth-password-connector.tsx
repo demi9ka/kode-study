@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, FieldErrors, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { getSchema, TAuthPassword } from './model'
 import { AuthPassword } from './auth-password'
-import { useAuthEnter } from './hooks/use-auth-enter'
-import { saveValue, storeString } from '@features/storage'
+import { useAuthEnter } from '@entities/auth/hooks'
+import { saveValue } from '@features/storage'
 
 type AuthPhoneConnectorType = {
   guestToken: string

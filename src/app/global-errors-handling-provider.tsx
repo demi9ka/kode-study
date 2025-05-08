@@ -1,8 +1,9 @@
 import { ReactNode, useEffect } from 'react'
+
+import { startHeadersInterceptor } from '@kode-frontend/session-interceptor'
 import { AxiosInstance } from 'axios'
 import { startGlobalErrorsInterceptor } from 'features/error-handling'
 import { ApiError } from 'features/error-handling/global-errors-interceptor'
-import { startHeadersInterceptor } from '@kode-frontend/session-interceptor'
 import { addToast } from '@features/toast'
 import { getValue } from '@features/storage'
 
@@ -22,6 +23,7 @@ const globalErrors: ApiError[] = [
 
 const getHeaders = () => {
   const currentAccessToken = getValue('accessToken')
+
   const headers = []
 
   if (currentAccessToken) {
@@ -31,13 +33,7 @@ const getHeaders = () => {
     })
   }
 
-  return [
-    ...headers,
-    // {
-    //   key: 'Prefer',
-    //   value: 'code=409',
-    // },
-  ]
+  return [...headers]
 }
 
 type Props = {
@@ -56,17 +52,15 @@ export const GlobalErrorHandlingProvider = ({
 
     const { eject } = startGlobalErrorsInterceptor({
       globalErrors: [...globalErrors],
-      skipErrors: [
-        // {
-        //   code: 'ERR_CONFLICT',
-        //   status: 409,
-        // },
-      ],
-      onGlobalError: error => {
+      skipErrors: [],
+      onGlobalError: async error => {
+        console.error('Global error', error)
+
         showErrorToast({ message: `Ooops: ${error.code}` })
       },
       onUnhandledError: error => {
         showErrorToast({ message: error.code || 'Ooops, что то не так!' })
+        console.log('onUnhandledError', error)
       },
     })(axiosInstance)
 

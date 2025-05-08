@@ -12,7 +12,7 @@ const Logo = styled.Image`
   height: ${({ theme }) => theme.spacing(5.75)}px;
 `
 
-export const Welcome = () => {
+export const AuthWelcome = () => {
   return (
     <Wrapper>
       <Logo source={Images.logo} />

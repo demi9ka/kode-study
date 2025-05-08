@@ -33,10 +33,10 @@ const Button = styled(PrimaryButton)`
 `
 
 type AuthSetPinCodeProps = {
-  goToHome: VoidFunction
+  onPress: VoidFunction
 }
 
-export const AuthSuccess = ({ goToHome }: AuthSetPinCodeProps) => {
+export const AuthSuccess = ({ onPress }: AuthSetPinCodeProps) => {
   return (
     <Wrapper>
       <ImageComponent source={Images.authSuccess} />
@@ -45,7 +45,7 @@ export const AuthSuccess = ({ goToHome }: AuthSetPinCodeProps) => {
         Теперь вы можете использовать мобильное{'\n'}приложение Kode bank
       </Description>
       <Footer>
-        <Button onPress={goToHome}>Продолжить</Button>
+        <Button onPress={onPress}>Продолжить</Button>
       </Footer>
     </Wrapper>
   )

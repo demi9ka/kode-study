@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react'
 import { PinCode } from './pin-code'
 import { addToast } from '@features/toast'
 import { PinCodeVariantType } from './types'
-import { deleteValue, saveValue, storeString } from '@features/storage'
+import { deleteValue, saveValue } from '@features/storage'
 import { Alert } from 'react-native'
+import { setAuthState } from '@features/auth/model'
 
 type PinCodeConnectorProps = {
   variant: PinCodeVariantType
   compareValue?: string
   pinCodeLen: number
   goToPhone: VoidFunction
-  goToHome: VoidFunction
+
   goToConfirm: (compare: string, pinCodeLen: number) => void
   goToSuccess: VoidFunction
 }
@@ -21,7 +22,7 @@ export const PinCodeConnector = ({
   pinCodeLen,
   goToPhone,
   goToConfirm,
-  goToHome,
+
   goToSuccess,
 }: PinCodeConnectorProps) => {
   const [value, setValue] = useState('')
@@ -74,8 +75,7 @@ export const PinCodeConnector = ({
       saveValue('pinCode', pinCode)
       goToSuccess()
     } else if (variant == 'write') {
-      storeString('pinCode', pinCode)
-      goToHome()
+      setAuthState({ authState: true })
     }
     setValue('')
   }

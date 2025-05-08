@@ -1,12 +1,19 @@
 import { styled } from '@shared/ui/theme'
-import { Button } from '../../otp-keyboard'
 import { Typography } from '@shared/ui/atoms'
+import { TouchableOpacity } from 'react-native'
 
 type Props = {
   text: string
   canResend: boolean
   onPress: VoidFunction
 }
+
+const Button = styled(TouchableOpacity)`
+  width: ${({ theme }) => theme.spacing(12)}px;
+  height: ${({ theme }) => theme.spacing(8.5)}px;
+  justify-content: center;
+  align-items: center;
+`
 
 export const ResendButton = ({ onPress, text, canResend }: Props) => {
   return (

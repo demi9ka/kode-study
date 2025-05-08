@@ -1,9 +1,9 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParamsList } from '@app/navigation/navigators/root-navigator/types'
 import { AuthPasswordConnector } from '@features/auth'
 import { Alert } from 'react-native'
+import { AuthStackScreenParams } from '../types'
 
-type Props = StackScreenProps<RootStackParamsList, 'authPassword'>
+type Props = StackScreenProps<AuthStackScreenParams, 'authPassword'>
 
 export const AuthPasswordScreen = ({ route, navigation }: Props) => {
   const goToPinCode = () => {

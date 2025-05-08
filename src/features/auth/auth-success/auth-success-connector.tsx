@@ -1,11 +1,9 @@
+import { setAuthState } from '../model'
 import { AuthSuccess } from './auth-success'
 
-type AuthSuccessConnectorProps = {
-  goToHome: VoidFunction
-}
-
-export const AuthSuccessConnector = ({
-  goToHome,
-}: AuthSuccessConnectorProps) => {
-  return <AuthSuccess goToHome={goToHome} />
+export const AuthSuccessConnector = () => {
+  const onPress = () => {
+    setAuthState({ authState: true })
+  }
+  return <AuthSuccess onPress={onPress} />
 }

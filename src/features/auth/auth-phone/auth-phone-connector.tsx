@@ -4,7 +4,7 @@ import { useForm, FieldErrors, FormProvider } from 'react-hook-form'
 import { AuthPhone } from './auth-phone'
 import { TAuthPostOtpCode, getMaskedPhone, getSchema } from './model'
 import { useEffect } from 'react'
-import { useOtpCode } from './hooks/use-otp-code'
+import { useOtpCode } from '@entities/auth/hooks'
 import { OtpProps } from '@features/otp/otp-connector'
 import { saveValue } from '@features/storage'
 

@@ -1,10 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParamsList } from '@app/navigation/navigators/root-navigator/types'
-import { WelcomeConnector } from '@screens/welcome'
+import { AuthStackScreenParams } from '../types'
+import { AuthWelcomeConnector } from '@features/auth'
 
-type Props = StackScreenProps<RootStackParamsList, 'welcome'>
+type Props = StackScreenProps<AuthStackScreenParams, 'authWelcome'>
 
-export const WelcomeScreen = ({ navigation }: Props) => {
+export const AuthWelcomeScreen = ({ navigation }: Props) => {
   const goToPhoneNumber = () => {
     navigation.replace('authPhone')
   }
@@ -12,7 +12,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
     navigation.replace('authPassword', { guestToken })
   }
   const goToPinCode = (pinCode: string) => {
-    navigation.replace('pinCode', {
+    navigation.replace('authPinCode', {
       pinCodeLen: pinCode.length,
       variant: 'write',
       compareValue: pinCode,
@@ -20,7 +20,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <WelcomeConnector
+    <AuthWelcomeConnector
       goToPinCode={goToPinCode}
       goToPassword={goToPassword}
       goToPhoneNumber={goToPhoneNumber}

@@ -22,7 +22,6 @@ export const App = () => {
 
   return (
     <Providers>
-        
       <NavigationConnector />
     </Providers>
   )

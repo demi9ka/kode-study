@@ -1,10 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParamsList } from '@app/navigation/navigators/root-navigator/types'
+import { AuthStackScreenParams } from '../types'
 import { PinCodeConnector } from '@features/pin-code'
 
-type Props = StackScreenProps<RootStackParamsList, 'pinCode'>
+type Props = StackScreenProps<AuthStackScreenParams, 'authPinCode'>
 
-export const PinCodeScreen = ({ navigation, route }: Props) => {
+export const AuthPinCodeScreen = ({ navigation, route }: Props) => {
   const { compareValue, pinCodeLen, variant } = route.params
 
   const goToConfirm = (pinCode: string, pinCodeLen: number) => {
@@ -12,7 +12,7 @@ export const PinCodeScreen = ({ navigation, route }: Props) => {
       index: 0,
       routes: [
         {
-          name: 'pinCode',
+          name: 'authPinCode',
           params: { pinCodeLen, variant: 'confirm', compareValue: pinCode },
         },
       ],
@@ -22,14 +22,6 @@ export const PinCodeScreen = ({ navigation, route }: Props) => {
     navigation.reset({
       index: 0,
       routes: [{ name: 'authSuccess' }],
-    })
-  }
-  const goToHome = () => {
-    navigation.replace('HomeTabs', {
-      BankMain: undefined,
-      HomeMain: undefined,
-      PaymentMain: undefined,
-      ProfileMain: undefined,
     })
   }
 
@@ -46,7 +38,6 @@ export const PinCodeScreen = ({ navigation, route }: Props) => {
       pinCodeLen={pinCodeLen}
       compareValue={compareValue}
       goToConfirm={goToConfirm}
-      goToHome={goToHome}
       goToSuccess={goToSuccess}
       goToPhone={goToPhone}
     />

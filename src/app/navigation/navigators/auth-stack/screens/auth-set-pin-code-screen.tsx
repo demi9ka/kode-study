@@ -1,8 +1,8 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { AuthSetPinCodeConnector } from '@features/auth'
-import { RootStackParamsList } from '..'
+import { AuthStackScreenParams } from '..'
 
-type Props = StackScreenProps<RootStackParamsList, 'authSetPinCode'>
+type Props = StackScreenProps<AuthStackScreenParams, 'authSetPinCode'>
 
 export const AuthSetPinCodeScreen = ({ navigation }: Props) => {
   const onSkip = () => {
@@ -10,7 +10,7 @@ export const AuthSetPinCodeScreen = ({ navigation }: Props) => {
   }
 
   const goToPinCode = () => {
-    navigation.navigate('pinCode', {
+    navigation.navigate('authPinCode', {
       variant: 'create',
       pinCodeLen: 5,
     })

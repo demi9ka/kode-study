@@ -59,7 +59,7 @@ const Row = styled(View)`
   flex-direction: row;
 `
 
-export const Button = styled(TouchableOpacity)`
+const Button = styled(TouchableOpacity)`
   width: ${({ theme }) => theme.spacing(12)}px;
   height: ${({ theme }) => theme.spacing(8.5)}px;
   justify-content: center;

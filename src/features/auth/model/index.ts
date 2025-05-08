@@ -1,17 +1,19 @@
-// import { createEvent, createStore, sample } from 'effector';
-// import { persist } from '@effector-storage/react-native-async-storage';
+import { createDomain, createStore } from 'effector'
 
-// type Tokens = {
-//   accessToken: string;
-// };
+const authStateDomain = createDomain('app-state')
 
-// export const setTokens = createEvent<Tokens>();
+export const setAuthState = authStateDomain.createEvent<{
+  authState: boolean
+}>()
 
-// export const $tokens = createStore<Tokens | null>(null);
+export const $authState = createStore<boolean>(false).on(
+  setAuthState,
+  (_, { authState }) => {
+    return authState
+  },
+)
 
-// sample({
-//   clock: setTokens,
-//   target: $tokens,
-// });
-
-// persist({ store: $tokens, key: 'auth' });
+export const authStateModel = {
+  $authState,
+  setAuthState,
+}

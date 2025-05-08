@@ -1,18 +1,18 @@
 import { useEffect } from 'react'
-import { Welcome } from './welcome'
-import { getString, getValue } from '@features/storage'
+import { AuthWelcome } from './auth-welcome'
+import { getValue } from '@features/storage'
 
-type WelcomeConnectorProps = {
+type AuthWelcomeConnectorProps = {
   goToPhoneNumber: VoidFunction
   goToPassword: (guestToken: string) => void
   goToPinCode: (pinCode: string) => void
 }
 
-export const WelcomeConnector = ({
+export const AuthWelcomeConnector = ({
   goToPassword,
   goToPhoneNumber,
   goToPinCode,
-}: WelcomeConnectorProps) => {
+}: AuthWelcomeConnectorProps) => {
   useEffect(() => {
     setTimeout(() => {
       const guestToken = getValue('guestToken')
@@ -29,5 +29,5 @@ export const WelcomeConnector = ({
     }, 100)
   }, [])
 
-  return <Welcome />
+  return <AuthWelcome />
 }

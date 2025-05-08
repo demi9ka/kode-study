@@ -1,11 +1,15 @@
 import { PinCodeVariantType } from '@features/pin-code/types'
 import { Skip } from './skip'
-import { RootStackParamsList } from '@app/navigation/navigators/root-navigator'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { AuthStackScreenParams } from '@app/navigation/navigators/auth-stack'
 
 type Props = {
   variant: PinCodeVariantType
-  navigation: StackNavigationProp<RootStackParamsList, 'pinCode', undefined>
+  navigation: StackNavigationProp<
+    AuthStackScreenParams,
+    'authPinCode',
+    undefined
+  >
 }
 
 export const SkipConnector = ({ variant, navigation }: Props) => {

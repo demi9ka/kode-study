@@ -1,7 +1,9 @@
+import { authStateModel } from '@features/auth/model'
 import { RootNavigator } from './root-navigator'
+import { useUnit } from 'effector-react'
 
 export const RootNavigatorConnector = () => {
-  const isAuthenticated = true
+  const isAuth = useUnit(authStateModel.$authState)
 
-  return <RootNavigator />
+  return <RootNavigator isAuth={isAuth} />
 }
