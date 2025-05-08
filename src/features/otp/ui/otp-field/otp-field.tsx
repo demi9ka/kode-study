@@ -30,7 +30,7 @@ export const OtpField = ({ value, otpLen, hasError }: OtpFieldProps) => {
         {indexList.slice(otpLen / 2).map(i => (
           <OtpFieldItem
             hasError={hasError}
-            key={`${i}_2`}
+            key={`${i}2`}
             value={value[i] || ''}
           />
         ))}

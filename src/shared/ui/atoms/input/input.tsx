@@ -34,7 +34,7 @@ const InputNode = styled(TextInput)<{
 
 export type Props = {
   hasClearButton?: boolean
-  isError: boolean
+  isError?: boolean
   leftSection?: ReactNode
   rigthSection?: ReactNode
   wrapperStyle?: StyleProp<ViewStyle>

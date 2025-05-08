@@ -41,7 +41,7 @@ export const PaymentServicesConnector = ({
       onRefresh={refetch}
       search={search}
       setSearch={setSearch}
-      services_data={filteredData}
+      servicesData={filteredData}
       openCreate={openCreate}
       isLoading={isLoading}
     />

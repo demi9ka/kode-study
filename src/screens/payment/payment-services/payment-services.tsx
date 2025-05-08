@@ -16,7 +16,7 @@ import { Line } from '@shared/ui/atoms'
 import { TPaymentService } from './types'
 
 type Props = {
-  services_data: TPaymentService[]
+  servicesData: TPaymentService[]
   search: string
   setSearch: (v: string) => void
   openCreate: (id: string) => void
@@ -41,7 +41,7 @@ export const PaymentServices = ({
   isLoading,
   openCreate,
   search,
-  services_data,
+  servicesData,
   setSearch,
   onRefresh,
 }: Props) => {
@@ -78,7 +78,7 @@ export const PaymentServices = ({
               tintColor='white'
             />
           }
-          data={services_data}
+          data={servicesData}
           renderItem={renderItem}
           ItemSeparatorComponent={separatorLine}
           keyExtractor={keyExtractor}
@@ -88,7 +88,7 @@ export const PaymentServices = ({
             <Header>
               <Input
                 value={search}
-                onChangeText={setSearch}
+                onChange={setSearch}
                 leftSection={
                   <IconSearch
                     size={24}

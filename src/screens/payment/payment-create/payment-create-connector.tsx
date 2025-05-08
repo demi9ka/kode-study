@@ -28,7 +28,7 @@ export const PaymentCreateConnector = ({
 }: PaymentCreateProps) => {
   const { id, icon, name } = route.params
   const { data } = usePaymentService(id)
-  const { recipient_mask, cashback_percentage } = !data
+  const { cashback_percentage: cashbackPercentage } = !data
     ? { cashback_percentage: 0 }
     : data.data
 
@@ -53,7 +53,7 @@ export const PaymentCreateConnector = ({
       amount: numberValueFormMoney(money),
       phone,
       name,
-      cashbackPercentage: cashback_percentage!,
+      cashbackPercentage: cashbackPercentage!,
     })
   }
 
@@ -89,9 +89,9 @@ export const PaymentCreateConnector = ({
 
   const currentMoneyValue = numberValueFormMoney(String(moneyValue))
   const cacheBackString =
-    currentMoneyValue > 0 && cashback_percentage
-      ? `Ваш кешбек составит ${cashback_percentage / 100}% - ${formattedMoneyToString(
-          currentMoneyValue * (cashback_percentage / 10000),
+    currentMoneyValue > 0 && cashbackPercentage
+      ? `Ваш кешбек составит ${cashbackPercentage / 100}% - ${formattedMoneyToString(
+          currentMoneyValue * (cashbackPercentage / 10000),
         )}`
       : ''
 

@@ -85,7 +85,7 @@ export const PinCodeConnector = ({
   }
 
   const onPressRemove = () => {
-    setValue(prev_v => prev_v.slice(0, -1))
+    setValue(prev => prev.slice(0, -1))
   }
 
   const startErrorDuration = (errorText: string) => {
