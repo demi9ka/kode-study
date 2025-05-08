@@ -1,7 +1,11 @@
-import { ImageSourcePropType } from "react-native";
+export type TServiceResponce = {
+  service_id: string
+  service_name: string
+  service_icon?: string | null
+}
 
-export type TServiceItem = {
-    serviceId: string,
-    serviceName: string,
-    serviceIcon: ImageSourcePropType,
+export type TPaymentService = {
+  id: string
+  name: string
+  icon: string
 }

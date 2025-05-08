@@ -1,2 +1,5 @@
-export { PaymentServices } from './payment-services'
-export { PaymentCreate } from './payment-create'
+export { PaymentConfirmConnector } from './payment-confirm'
+export { PaymentCreateConnector } from './payment-create'
+export { PaymentMainConnector } from './payment-main'
+export { PaymentResultConnector } from './payment-result'
+export { PaymentServicesConnector } from './payment-services'

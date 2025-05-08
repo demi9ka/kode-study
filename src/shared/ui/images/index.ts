@@ -1,4 +1,6 @@
-export const Images = {
+import { ImageSourcePropType } from 'react-native'
+
+export const Images: Record<string, ImageSourcePropType> = {
   beeline: require('./beeline.png'),
   golden: require('./golden.png'),
   kode: require('./kode.png'),
@@ -10,4 +12,8 @@ export const Images = {
   yota: require('./yota.png'),
   bankcard: require('./bankcard.png'),
   successTransaction: require('./success.png'),
+  errorTransaction: require('./error.png'),
+  logo: require('./logo.png'),
+  authPinCode: require('./auth-pin-code.png'),
+  authSuccess: require('./auth-success.png'),
 }
