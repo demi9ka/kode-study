@@ -13,7 +13,7 @@ export const PaymentConfirmScreen = ({ navigation, route }: Props) => {
   }
 
   const goToOtp = (data: OtpProps) => {
-    navigation.navigate('otp', data)
+    navigation.navigate('paymentOtp', data)
   }
   return (
     <PaymentConfirmConnector
