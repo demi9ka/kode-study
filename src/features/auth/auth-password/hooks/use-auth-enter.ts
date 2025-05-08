@@ -1,3 +1,4 @@
+import { addToast } from '@features/toast'
 import { authApi } from '@shared/api'
 import { useMutation } from '@tanstack/react-query'
 
@@ -17,6 +18,12 @@ export const useAuthEnter = () => {
           },
         })
       ).data
+    },
+    onError: e => {
+      addToast({
+        message: e.message,
+        variant: 'error',
+      })
     },
   })
 }

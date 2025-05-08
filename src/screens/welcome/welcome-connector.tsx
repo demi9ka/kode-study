@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Welcome } from './welcome'
-import { getString } from '@features/storage'
+import { getString, getValue } from '@features/storage'
 
 type WelcomeConnectorProps = {
   goToPhoneNumber: VoidFunction
@@ -14,20 +14,19 @@ export const WelcomeConnector = ({
   goToPinCode,
 }: WelcomeConnectorProps) => {
   useEffect(() => {
-    setTimeout(async () => {
-      const guestToken = await getString('guestToken')
-
-      goToPhoneNumber()
-      //   if (guestToken) {
-      //     const pinCode = await getString('pinCode')
-      //     if (pinCode) {
-      //       goToPinCode(pinCode)
-      //     } else {
-      //       goToPassword(guestToken)
-      //     }
-      //   } else {
-      //   }
-    }, 1000)
+    setTimeout(() => {
+      const guestToken = getValue('guestToken')
+      if (guestToken) {
+        const pinCode = getValue('pinCode')
+        if (pinCode) {
+          goToPinCode(pinCode)
+        } else {
+          goToPassword(guestToken)
+        }
+      } else {
+        goToPhoneNumber()
+      }
+    }, 100)
   }, [])
 
   return <Welcome />

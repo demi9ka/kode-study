@@ -1,6 +1,5 @@
 import z from 'zod'
 import { onlyDigitsValue, onlyDigitsValueLength } from './helpers'
-import { addToast } from '@features/toast'
 
 export const getSchema = () => {
   const schema = z

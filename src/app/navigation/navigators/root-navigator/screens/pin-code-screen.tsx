@@ -7,22 +7,25 @@ type Props = StackScreenProps<RootStackParamsList, 'pinCode'>
 export const PinCodeScreen = ({ navigation, route }: Props) => {
   const { compareValue, pinCodeLen, variant } = route.params
 
-  const skipPinCode = () => {
-    navigation.navigate('authSuccess')
-  }
-
   const goToConfirm = (pinCode: string, pinCodeLen: number) => {
-    navigation.navigate('pinCode', {
-      pinCodeLen,
-      variant: 'confirm',
-      compareValue: pinCode,
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'pinCode',
+          params: { pinCodeLen, variant: 'confirm', compareValue: pinCode },
+        },
+      ],
     })
   }
   const goToSuccess = () => {
-    navigation.navigate('authSuccess')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'authSuccess' }],
+    })
   }
   const goToHome = () => {
-    navigation.navigate('HomeTabs', {
+    navigation.replace('HomeTabs', {
       BankMain: undefined,
       HomeMain: undefined,
       PaymentMain: undefined,
@@ -30,15 +33,22 @@ export const PinCodeScreen = ({ navigation, route }: Props) => {
     })
   }
 
+  const goToPhone = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'authPhone' }],
+    })
+  }
+
   return (
     <PinCodeConnector
       variant={variant}
-      skipPinCode={skipPinCode}
       pinCodeLen={pinCodeLen}
       compareValue={compareValue}
       goToConfirm={goToConfirm}
       goToHome={goToHome}
       goToSuccess={goToSuccess}
+      goToPhone={goToPhone}
     />
   )
 }

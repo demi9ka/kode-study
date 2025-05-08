@@ -3,9 +3,14 @@ import { AxiosInstance } from 'axios'
 import { startGlobalErrorsInterceptor } from 'features/error-handling'
 import { ApiError } from 'features/error-handling/global-errors-interceptor'
 import { startHeadersInterceptor } from '@kode-frontend/session-interceptor'
+import { addToast } from '@features/toast'
+import { getValue } from '@features/storage'
 
 const showErrorToast = ({ message }: any) => {
-  console.log('message', message)
+  addToast({
+    message,
+    variant: 'error',
+  })
 }
 
 const globalErrors: ApiError[] = [
@@ -16,8 +21,7 @@ const globalErrors: ApiError[] = [
 ]
 
 const getHeaders = () => {
-  const currentAccessToken = 'test'
-
+  const currentAccessToken = getValue('accessToken')
   const headers = []
 
   if (currentAccessToken) {
@@ -59,13 +63,10 @@ export const GlobalErrorHandlingProvider = ({
         // },
       ],
       onGlobalError: error => {
-        console.error('Global error', error)
-
         showErrorToast({ message: `Ooops: ${error.code}` })
       },
       onUnhandledError: error => {
         showErrorToast({ message: error.code || 'Ooops, что то не так!' })
-        console.log('onUnhandledError', error)
       },
     })(axiosInstance)
 

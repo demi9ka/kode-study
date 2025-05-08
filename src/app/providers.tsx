@@ -3,6 +3,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { apiAxiosInstance } from '@shared/api'
 import { GlobalErrorHandlingProvider } from './global-errors-handling-provider'
+import { ToastsListProvider } from '@features/toast'
+import { SafeAreaView } from 'react-native'
 
 const queryClient = new QueryClient()
 
@@ -14,9 +16,15 @@ export const Providers = ({ children }: Props) => {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <GlobalErrorHandlingProvider axiosInstance={apiAxiosInstance}>
-          <ThemeProvider>{children}</ThemeProvider>
-        </GlobalErrorHandlingProvider>
+        <ThemeProvider>
+          <SafeAreaView style={{ flex: 1 }}>
+            <ToastsListProvider>
+              <GlobalErrorHandlingProvider axiosInstance={apiAxiosInstance}>
+                {children}
+              </GlobalErrorHandlingProvider>
+            </ToastsListProvider>
+          </SafeAreaView>
+        </ThemeProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
   )

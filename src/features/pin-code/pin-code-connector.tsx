@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { PinCode } from './pin-code'
 import { addToast } from '@features/toast'
 import { PinCodeVariantType } from './types'
-import { storeString } from '@features/storage'
+import { deleteValue, saveValue, storeString } from '@features/storage'
+import { Alert } from 'react-native'
 
 type PinCodeConnectorProps = {
   variant: PinCodeVariantType
   compareValue?: string
   pinCodeLen: number
-  skipPinCode: VoidFunction
+  goToPhone: VoidFunction
   goToHome: VoidFunction
   goToConfirm: (compare: string, pinCodeLen: number) => void
   goToSuccess: VoidFunction
@@ -18,34 +19,65 @@ export const PinCodeConnector = ({
   variant,
   compareValue,
   pinCodeLen,
-  skipPinCode,
+  goToPhone,
   goToConfirm,
   goToHome,
   goToSuccess,
 }: PinCodeConnectorProps) => {
   const [value, setValue] = useState('')
-  const [hasError, sethasError] = useState(false)
+  const [errorText, setErrorText] = useState<string | null>(null)
+  const [writeAttempts, setWriteAttempts] = useState(5)
+
+  const logout = () => {
+    deleteValue('guestToken')
+    deleteValue('pinCode')
+    deleteValue('accessToken')
+    deleteValue('refreshToken')
+    goToPhone()
+  }
 
   const handleConfirm = async (pinCode: string) => {
     if (pinCode.length != pinCodeLen) {
       return
     }
     if (compareValue && pinCode !== compareValue) {
-      addToast({
-        message: 'Короткий код не совпадает с предыдущим',
-        variant: 'error',
-      })
-      startErrorDuration()
+      if (variant == 'confirm') {
+        addToast({
+          message: 'Короткий код не совпадает с предыдущим',
+          variant: 'error',
+        })
+        startErrorDuration('error')
+      } else {
+        setWriteAttempts(prev => prev - 1)
+        if (writeAttempts == 0) {
+          Alert.alert(
+            'Вы ввели неверно код 5 раз',
+            'Данная сессия авторизации будет сброшена!',
+            [
+              {
+                text: 'Выход',
+                style: 'destructive',
+                onPress: logout,
+              },
+            ],
+          )
+        } else {
+          startErrorDuration(`Неверный код. Осталось ${writeAttempts} попытки`)
+        }
+      }
+
       return
     }
     if (variant == 'create') {
       goToConfirm(value, pinCodeLen)
     } else if (variant == 'confirm') {
+      saveValue('pinCode', pinCode)
       goToSuccess()
     } else if (variant == 'write') {
       storeString('pinCode', pinCode)
       goToHome()
     }
+    setValue('')
   }
 
   const onPressNumber = (value: string) => {
@@ -56,10 +88,11 @@ export const PinCodeConnector = ({
     setValue(prev_v => prev_v.slice(0, -1))
   }
 
-  const startErrorDuration = () => {
-    sethasError(true)
+  const startErrorDuration = (errorText: string) => {
+    setErrorText(errorText)
     setTimeout(() => {
-      sethasError(false)
+      setErrorText(null)
+      setValue('')
     }, 2000)
   }
 
@@ -69,11 +102,10 @@ export const PinCodeConnector = ({
 
   return (
     <PinCode
-      hasError={hasError}
+      errorText={errorText}
       pinCodeLen={pinCodeLen}
       value={value}
-      onSkip={skipPinCode}
-      isCompared={Boolean(compareValue)}
+      variant={variant}
       onPressNumber={onPressNumber}
       onPressRemove={onPressRemove}
     />

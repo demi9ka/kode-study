@@ -1,21 +1,20 @@
 import styled from 'styled-components/native'
 import { Typography } from '@shared/ui/atoms'
-import { TouchableOpacity, View } from 'react-native'
-import {
-  PinCodeField,
-  PinCodeFieldProps,
-} from './ui/pin-code-field/pin-code-field'
+import { View } from 'react-native'
+import { PinCodeField } from './ui/pin-code-field'
 import {
   PinCodeKeyboard,
   PinCodeKeyboardProps,
 } from './ui/pin-code-keyboard/pin-code-keyboard'
+import { PinCodeVariantType } from './types'
+import { pinCodeTitle } from './constants'
 
 type PinCodeProps = {
   value: string
-  isCompared: boolean
-  onSkip: VoidFunction
-} & PinCodeFieldProps &
-  PinCodeKeyboardProps
+  variant: PinCodeVariantType
+  errorText: string | null
+  pinCodeLen: number
+} & PinCodeKeyboardProps
 
 const Wrapper = styled(View)`
   flex: 1;
@@ -27,36 +26,38 @@ const KeyboardWrapper = styled(View)`
   flex: 1;
   justify-content: flex-end;
 `
-const Header = styled.View`
-  width: 100%;
-  flex-direction: row;
-  justify-content: start;
-  padding: ${({ theme }) => theme.spacing(2)}px;
-  padding-bottom: ${({ theme }) => theme.spacing(6.5)}px;
-`
-const SkipText = styled(Typography)`
-  color: ${({ theme }) => theme.palette.text.secondary};
+
+const ErrorText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.indicator.error};
 `
 export const PinCode = ({
   value,
-  isCompared,
+  variant,
   pinCodeLen,
-  hasError,
-  onSkip,
+  errorText,
   onPressNumber,
   onPressRemove,
 }: PinCodeProps) => {
+  const title = pinCodeTitle[variant]
+  const viewErorr = variant == 'write' && errorText
   return (
     <Wrapper>
-      <Header>
-        <TouchableOpacity onPress={onSkip}>
-          <SkipText variant='body15Regular'>Пропустить</SkipText>
-        </TouchableOpacity>
-      </Header>
       <Typography variant='body15Regular' align='center'>
-        {isCompared ? 'Поторите короткий код' : 'Установите короткий код'}
+        {title}
       </Typography>
-      <PinCodeField hasError={hasError} pinCodeLen={pinCodeLen} value={value} />
+      <PinCodeField
+        hasError={Boolean(errorText)}
+        pinCodeLen={pinCodeLen}
+        value={value}
+      />
+      {viewErorr ? (
+        <ErrorText variant='caption1' align='center'>
+          {errorText}
+        </ErrorText>
+      ) : (
+        ''
+      )}
+
       <KeyboardWrapper>
         <PinCodeKeyboard
           onPressNumber={onPressNumber}

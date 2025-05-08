@@ -1,13 +1,12 @@
 import { styled } from '@shared/ui/theme'
 import { View } from 'react-native'
 
-export const PinCodeFieldItem = ({
-  checked,
-  hasError,
-}: {
+type Props = {
   checked: boolean
   hasError: boolean
-}) => {
+}
+
+export const PinCodeFieldItem = ({ checked, hasError }: Props) => {
   return <Wrapper $hasError={hasError} $checked={checked} />
 }
 

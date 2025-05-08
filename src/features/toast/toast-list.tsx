@@ -3,10 +3,12 @@ import { TouchableOpacity, View } from 'react-native'
 import { Typography } from '@shared/ui/atoms'
 import { IconClose } from '@shared/ui/icons'
 import { Toast, ToastVariant } from './types'
+import { ReactNode } from 'react'
 
 type ToastsProps = {
   toasts: Toast[]
   removeToasts: (id: number) => void
+  children: ReactNode
 }
 
 const Wrapper = styled(View)`
@@ -32,21 +34,26 @@ const ToastComponent = styled.View<{
   width: 90%;
 `
 
-export const Toasts = ({ removeToasts, toasts }: ToastsProps) => {
-  const theme = useTheme()
+const IconCloseComponent = styled(IconClose)`
+  color: ${({ theme }) => theme.palette.text.primary};
+`
 
+export const Toasts = ({ removeToasts, toasts, children }: ToastsProps) => {
   return (
-    <Wrapper>
-      {toasts.map(({ id, message, variant }) => {
-        return (
-          <ToastComponent key={id} $variant={variant}>
-            <Text variant='body15Regular'>{message}</Text>
-            <TouchableOpacity onPress={() => removeToasts(id)}>
-              <IconClose size={16} color={theme.palette.text.primary} />
-            </TouchableOpacity>
-          </ToastComponent>
-        )
-      })}
-    </Wrapper>
+    <>
+      {children}
+      <Wrapper>
+        {toasts.map(({ id, message, variant }) => {
+          return (
+            <ToastComponent key={id} $variant={variant}>
+              <Text variant='body15Regular'>{message}</Text>
+              <TouchableOpacity onPress={() => removeToasts(id)}>
+                <IconCloseComponent size={16} />
+              </TouchableOpacity>
+            </ToastComponent>
+          )
+        })}
+      </Wrapper>
+    </>
   )
 }

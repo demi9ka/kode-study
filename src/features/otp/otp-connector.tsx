@@ -22,13 +22,11 @@ export const OtpConnector = ({
   phone,
   otpLen,
   attempts,
-  resendIn: resendInInput,
+  resendIn,
   goToTop,
 }: OtpConnectorProps) => {
   const [otpId, setOtpId] = useState(defaultOtpId)
   const [value, setValue] = useState('')
-  const [resendIn, setResendIn] = useState(resendInInput)
-  const [canResend, setCanResend] = useState(false)
   const [attemptsLeft, setAttemptsLeft] = useState(attempts)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const { mutateAsync: otpConfirmMutate, isPending } = useConfirmOtp()
@@ -49,8 +47,9 @@ export const OtpConnector = ({
         onSuccess: e => {
           onConfirm(e.data.guestToken)
         },
-        onError: e => {
+        onError: () => {
           setAttemptsLeft(prev => prev - 1)
+
           if (attemptsLeft == 0) {
             Alert.alert(
               `Вы ввели неверно код ${attempts} раз`,
@@ -67,6 +66,10 @@ export const OtpConnector = ({
             )
           } else {
             setErrorMessage(`Неверный код. Осталось попыток: ${attemptsLeft}`)
+            setValue('')
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 2000)
           }
         },
       },
@@ -86,39 +89,16 @@ export const OtpConnector = ({
   const onResend = async () => {
     const { otpId: newOtpId } = await otpMutate(phone)
     setOtpId(newOtpId)
-    setResendIn(resendInInput)
-    waitResend()
+    return true
   }
 
   useEffect(() => {
     handleConfirm(value)
   }, [value])
-
-  useEffect(() => {
-    const interval = waitResend()
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
-
-  const waitResend = () => {
-    setCanResend(false)
-    const interval = setInterval(() => {
-      setResendIn(prev => {
-        if (prev <= 0) {
-          clearInterval(interval)
-          setCanResend(true)
-        }
-        return prev - 1
-      })
-    }, 1000)
-    return interval
-  }
   return (
     <Otp
-      canResend={canResend}
-      resendIn={resendIn}
       onResend={onResend}
+      resendIn={resendIn}
       attemptsLeft={attemptsLeft}
       isLoading={isPending}
       onPressNumber={onPressNumber}

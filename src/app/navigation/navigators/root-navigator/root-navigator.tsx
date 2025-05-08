@@ -12,10 +12,10 @@ import {
   PaymentResultScreen,
   PaymentServicesScreen,
   WelcomeScreen,
+  PinCodeScreen,
+  AuthSuccessScreen,
 } from './screens'
-import { PinCode } from '@features/pin-code/pin-code'
-import { PinCodeScreen } from './screens/pin-code-screen'
-import { AuthSuccessScreen } from './screens/auth-success-screen'
+import { SkipConnector } from '@features/pin-code/atoms/skip/skip-connector'
 
 const RootStack = createStackNavigator<RootStackParamsList>()
 
@@ -72,7 +72,15 @@ export const RootNavigator = () => {
       <RootStack.Screen
         name='pinCode'
         component={PinCodeScreen}
-        options={{ headerShown: false }}
+        options={({ route, navigation }) => ({
+          title: 'Код',
+          headerLeft: () => (
+            <SkipConnector
+              navigation={navigation}
+              variant={route.params.variant}
+            />
+          ),
+        })}
       />
       <RootStack.Screen
         name='authSuccess'

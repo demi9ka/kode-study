@@ -3,20 +3,20 @@ import { useForm, FieldErrors, FormProvider } from 'react-hook-form'
 import { getSchema, TAuthPassword } from './model'
 import { AuthPassword } from './auth-password'
 import { useAuthEnter } from './hooks/use-auth-enter'
-import { storeString } from '@features/storage'
+import { saveValue, storeString } from '@features/storage'
 
 type AuthPhoneConnectorType = {
   guestToken: string
   goToPinCode: VoidFunction
-  popToTop: VoidFunction
+  exitAlert: VoidFunction
 }
 
 export const AuthPasswordConnector = ({
   guestToken,
   goToPinCode,
-  popToTop,
+  exitAlert,
 }: AuthPhoneConnectorType) => {
-  const { mutateAsync, isError } = useAuthEnter()
+  const { mutateAsync } = useAuthEnter()
   const form = useForm<TAuthPassword>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -28,19 +28,21 @@ export const AuthPasswordConnector = ({
   const { control, handleSubmit } = form
 
   const onValid = async ({ password }: TAuthPassword) => {
-    const { accessToken, refreshToken } = await mutateAsync({
-      password,
-      guestToken,
-    })
-    storeString('accessToken', accessToken)
-    storeString('refreshToken', refreshToken)
-    goToPinCode()
+    try {
+      const { accessToken, refreshToken } = await mutateAsync({
+        password,
+        guestToken,
+      })
+      saveValue('accessToken', accessToken)
+      saveValue('refreshToken', refreshToken)
+      goToPinCode()
+    } catch (e) {}
   }
 
   return (
     <FormProvider {...form}>
       <AuthPassword
-        popToTop={popToTop}
+        exitAlert={exitAlert}
         handleSubmit={handleSubmit(onValid)}
         control={control}
         isLoading={false}

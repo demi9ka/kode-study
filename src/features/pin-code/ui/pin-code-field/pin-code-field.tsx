@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { PinCodeFieldItem } from '../pin-code-field-item/pin-code-field-item'
+import { PinCodeFieldItem } from '../pin-code-field-item'
 
 export type PinCodeFieldProps = {
   value: string

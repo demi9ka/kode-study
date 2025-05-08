@@ -6,7 +6,7 @@ import { TAuthPostOtpCode, getMaskedPhone, getSchema } from './model'
 import { useEffect } from 'react'
 import { useOtpCode } from './hooks/use-otp-code'
 import { OtpProps } from '@features/otp/otp-connector'
-import { storeString } from '@features/storage'
+import { saveValue } from '@features/storage'
 
 type AuthPhoneConnectorType = {
   goToOtp: (props: OtpProps) => void
@@ -39,7 +39,7 @@ export const AuthPhoneConnector = ({
       attempts: 5,
       phone,
       onConfirm: guestToken => {
-        storeString('guestToken', guestToken)
+        saveValue('guestToken', guestToken)
         goToPassword(guestToken)
       },
     })

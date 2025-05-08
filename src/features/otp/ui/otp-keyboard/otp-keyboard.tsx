@@ -3,13 +3,13 @@ import { IconDelete } from '@shared/ui/icons'
 import { styled, useTheme } from '@shared/ui/theme'
 import { TouchableOpacity, View } from 'react-native'
 import { keyboardButton } from './constants'
+import { ResendButtonConnector } from './ui/resend-button'
 
 export type OtpKeyboardProps = {
+  resendIn: number
   onPressNumber: (v: string) => void
   onPressRemove: VoidFunction
-  onResend: VoidFunction
-  resendIn: number
-  canResend: boolean
+  onResend: () => Promise<boolean>
 }
 
 export const OtpKeyboard = ({
@@ -17,13 +17,8 @@ export const OtpKeyboard = ({
   onPressRemove,
   onResend,
   resendIn,
-  canResend,
 }: OtpKeyboardProps) => {
   const theme = useTheme()
-
-  const resendButtonText = canResend
-    ? 'Повторить'
-    : `Повторить\nчерез ${resendIn} сек.`
 
   return (
     <Wrapper>
@@ -38,11 +33,7 @@ export const OtpKeyboard = ({
           </Row>
         ))}
         <Row>
-          <Button disabled={!canResend} onPress={onResend}>
-            <ResendText variant='caption1' align='center'>
-              {resendButtonText}
-            </ResendText>
-          </Button>
+          <ResendButtonConnector delay={resendIn} onResend={onResend} />
           <Button onPress={() => onPressNumber('0')}>
             <ButtonText>0</ButtonText>
           </Button>
@@ -54,9 +45,7 @@ export const OtpKeyboard = ({
     </Wrapper>
   )
 }
-const ResendText = styled(Typography)`
-  color: ${({ theme }) => theme.palette.text.secondary};
-`
+
 const Wrapper = styled(View)`
   flex-direction: row;
   justify-content: center;
@@ -70,7 +59,7 @@ const Row = styled(View)`
   flex-direction: row;
 `
 
-const Button = styled(TouchableOpacity)`
+export const Button = styled(TouchableOpacity)`
   width: ${({ theme }) => theme.spacing(12)}px;
   height: ${({ theme }) => theme.spacing(8.5)}px;
   justify-content: center;

@@ -1,29 +1,22 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamsList } from '@app/navigation/navigators/root-navigator/types'
 import { WelcomeConnector } from '@screens/welcome'
-import { CommonActions } from '@react-navigation/native'
 
 type Props = StackScreenProps<RootStackParamsList, 'welcome'>
 
 export const WelcomeScreen = ({ navigation }: Props) => {
   const goToPhoneNumber = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'authPhone' }],
-      }),
-    )
+    navigation.replace('authPhone')
   }
   const goToPassword = (guestToken: string) => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'authPassword', params: { guestToken } }],
-      }),
-    )
+    navigation.replace('authPassword', { guestToken })
   }
   const goToPinCode = (pinCode: string) => {
-    console.log(pinCode)
+    navigation.replace('pinCode', {
+      pinCodeLen: pinCode.length,
+      variant: 'write',
+      compareValue: pinCode,
+    })
   }
 
   return (

@@ -4,7 +4,6 @@ import { AddTostType, RemoveToastParams, Toast } from '../types'
 const toastDomain = createDomain('toast')
 
 export const addToast = toastDomain.createEvent<AddTostType>()
-
 export const removeToast = toastDomain.createEvent<number>()
 export const clearToasts = toastDomain.createEvent()
 
